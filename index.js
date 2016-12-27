@@ -169,7 +169,7 @@ function handleMessage(sender,text,user) {
   // console.log(name);
   if (text === 'Pic') {
     sendGenericMessage(sender)
-  }else if (text.match(/weather/i)) {
+  }else if (text.match(/weather|conditions|forecast|outside/i)) {
     console.log("Getting weather");
     getWeather(sender,user)
   }else if (text.match(/fuck/i)) {
