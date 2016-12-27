@@ -37,8 +37,9 @@ app.post('/webhook', function (req, res) {
         let text = event.message.text
         console.log(JSON.stringify(event,null,2));
         handleMessage(sender,text);
-    }else{
-      console.log(JSON.stringify(event,null,2));
+    }else if(event.message.text){
+      if(event.message.text === '369239263222822')
+      sendTextMessage(sender, "Thumbs up to you too!")
     }
     if (event.postback) {
       let text = JSON.stringify(event.postback)
