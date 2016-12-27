@@ -61,6 +61,13 @@ app.post('/sonos',function (req,res) {
   var process = spawn('python',["sonos-controller.py", arg]);
   res.sendStatus(200)
 })
+// Sky remote
+// app.post('/sky',function (req,res) {
+//   let arg = req.body.arg;
+//   var spawn = require("child_process").spawn;
+//   var process = spawn('python',["sonos-controller.py", arg]);
+//   res.sendStatus(200)
+// })
 // Return function for webhook
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
@@ -178,7 +185,7 @@ function handleMessage(sender,text,user) {
   }else if (text.toLowerCase() === "help") {
     sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
-    sendTextMessage(sender, "Hello " + sender)
+    sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...😐 yet")
   }
 }
 // Handle stiker
