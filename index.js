@@ -45,11 +45,14 @@ app.post('/webhook/', function (req, res) {
     console.log(event.sender);
     if (event.message && event.message.text) {
         let text = event.message.text
+        console.log(JSON.stringify(event,null,2));
         if (text === 'Pic') {
             sendGenericMessage(sender)
             continue
         }else if (text.match(/fuck/i)) {
           sendTextMessage(sender, "No fuck you")
+        }else if (true) {
+
         }else {
           sendTextMessage(sender, "Hello " + sender)
         }
