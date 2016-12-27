@@ -46,16 +46,7 @@ app.post('/webhook/', function (req, res) {
     if (event.message && event.message.text) {
         let text = event.message.text
         console.log(JSON.stringify(event,null,2));
-        if (text === 'Pic') {
-            sendGenericMessage(sender)
-            continue
-        }else if (text.match(/fuck/i)) {
-          sendTextMessage(sender, "No fuck you")
-        }else if (sender === '1021053801339481') {
-          sendTextMessage(sender, "Hello Martin , how are you today?")
-        }else {
-          sendTextMessage(sender, "Hello " + sender)
-        }
+        handleMessage(sender,text);
     }
     if (event.postback) {
       let text = JSON.stringify(event.postback)
@@ -136,6 +127,24 @@ function sendGenericMessage(sender) {
             console.log('Error: ', response.body.error)
         }
     })
+}
+// Handle message
+function handleMessage(sender,text) {
+  if (text === 'Pic') {
+      sendGenericMessage(sender)
+      continue
+  }else if (text.match(/fuck/i)) {
+    sendTextMessage(sender, "No fuck you")
+    continue
+  }else if (sender === '1021053801339481') {
+    sendTextMessage(sender, "Hello Martin , how are you today?")
+    continue
+  }else if (text.match(/good/i)) {
+    sendTextMessage(sender, "Great, what can I do for you today?")
+  } else {
+    sendTextMessage(sender, "Hello " + sender)
+    continue
+  }
 }
 
 // Spin up the server
