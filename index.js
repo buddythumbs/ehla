@@ -7,7 +7,8 @@ const app = express()
 const martin = '1021053801339481'
 const laragh = '1162641380518805'
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
-
+const weatherAPI = '8ba0a17ada98c62ad89a2f76f571960d'
+const location = 'Maynooth,ie'
 // Setup port
 app.set('port', (process.env.PORT || 5000))
 // Process application/x-www-form-urlencoded
@@ -166,7 +167,9 @@ function handleMessage(sender,text,user) {
   let hello = false
   // console.log(name);
   if (text === 'Pic') {
-      sendGenericMessage(sender)
+    sendGenericMessage(sender)
+  }else if (text.match(/weather/i)) {
+    getWeather(sender,user)
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
   }else if (text.match(/hey|hello|hi/i)){
@@ -193,6 +196,23 @@ function getUser(id,text) {
     }
   })
 }
+// Get weather
+function getWeather(sender,user) {
+  request('api.openweathermap.org/data/2.5/weather?q='+
+    location + '&units=metric&APPID=' +
+    weatherAPI
+    ,function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
+      let weather = JSON.parse(body)
+      sendTextMessage(sender, "Hello " + sender + "\n" +
+        "The weather in " + location + "is " weather.weather.description + "\n" +
+         "Current temperature is " +  weather.main.temp + " c\n"
+      );
+    }
+  })
+}
+
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
