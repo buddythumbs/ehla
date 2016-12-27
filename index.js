@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
+    if (req.query['hub.verify_token'] === 'secret-token') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
@@ -37,10 +37,6 @@ app.post('/webhook/', function (req, res) {
         let text = event.message.text
         console.log(JSON.stringify(event,null,2));
         handleMessage(sender,text);
-    }else if(event.message.attachments.length>1){
-      sendTextMessage(sender, "I can't deal with files yet")
-    }else{
-      console.log(JSON.stringify(event,null,2));
     }
     if (event.postback) {
       let text = JSON.stringify(event.postback)
