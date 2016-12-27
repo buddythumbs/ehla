@@ -175,7 +175,7 @@ function handleMessage(sender,text) {
   }else if (text.match(/good/i)) {
     sendTextMessage(sender, "Great, what can I do for you today?")
   }else if (text.toLowerCase() === "help") {
-    sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+    sendTextMessage(sender, "Help:\n Type <b>'Pic'</b> to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
     sendTextMessage(sender, "Hello " + sender)
   }
