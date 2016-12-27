@@ -51,7 +51,7 @@ app.post('/webhook/', function (req, res) {
             continue
         }else if (text.match(/fuck/i)) {
           sendTextMessage(sender, "No fuck you")
-        }else if (sender === 1021053801339481) {
+        }else if (sender === '1021053801339481') {
           sendTextMessage(sender, "Hello Martin , how are you today?")
         }else {
           sendTextMessage(sender, "Hello " + sender)
