@@ -137,7 +137,7 @@ function handleMessage(sender,text) {
       sendGenericMessage(sender)
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
-  }else if (text.match(/hey|hello|hi/i))){
+  }else if (text.match(/hey|hello|hi/i)){
     if(sender === martin) {
       sendTextMessage(sender, "Hello Martin , how are you today?")
     }else if (sender === laragh) {
