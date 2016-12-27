@@ -33,7 +33,7 @@ app.post('/webhook', function (req, res) {
     console.log(event.sender);
     console.log(JSON.stringify(event,null,2));
     if (event.message) {
-      if ( && event.message.text) {
+      if (event.message && event.message.text) {
           let text = event.message.text
           handleMessage(sender,text);
       }else if(event.message.sticker_id){
