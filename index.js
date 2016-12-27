@@ -37,7 +37,7 @@ app.post('/webhook/', function (req, res) {
         let text = event.message.text
         console.log(JSON.stringify(event,null,2));
         handleMessage(sender,text);
-    }else if(event.message.attachment.length>1){
+    }else if(event.message.attachments.length>1){
       sendTextMessage(sender, "I can't deal with files yet")
     }else{
       console.log(JSON.stringify(event,null,2));
