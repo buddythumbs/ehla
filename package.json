@@ -1,0 +1,24 @@
+{
+  "name": "ehla",
+  "version": "1.0.0",
+  "description": "Smart home WIP - starting with one SONOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martin0852/ehla.git"
+  },
+  "author": "Martin O'Leary",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martin0852/ehla/issues"
+  },
+  "homepage": "https://github.com/martin0852/ehla#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.79.0"
+  }
+}
