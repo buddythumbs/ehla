@@ -185,8 +185,8 @@ function handleMessage(sender,text,user) {
   }else if (text.toLowerCase() === "help") {
     sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
-    sendTextMessage(sender, "😳💩")
     sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet")
+    sendTextMessage(sender, "😳💩")
   }
 }
 // Handle stiker
@@ -237,6 +237,9 @@ function getWeather(sender,user) {
               console.log('Error: ', response.body.error)
           }
       })
+      if (weather.main.temp < 6) {
+        sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+      }
     }
   })
 }
