@@ -7,6 +7,7 @@ const app = express()
 const martin = '1021053801339481'
 const laragh = '1162641380518805'
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
+
 // Setup port
 app.set('port', (process.env.PORT || 5000))
 // Process application/x-www-form-urlencoded
@@ -35,6 +36,7 @@ app.post('/webhook', function (req, res) {
     if (event.message) {
       if (event.message && event.message.text) {
           let text = event.message.text
+          console.log(event.message.From.Name);
           handleMessage(sender,text);
       }else if(event.message.sticker_id){
         if (event.message.sticker_id) {
@@ -170,12 +172,12 @@ function handleMessage(sender,text) {
     if(sender === martin) {
       sendTextMessage(sender, "Hello Martin , how are you today?")
     }else if (sender === laragh) {
-      sendTextMessage(sender, "Hello Shnookums , how are you today?")
+      sendTextMessage(sender, "Hello Laragh , how are you today?")
     }
   }else if (text.match(/good/i)) {
     sendTextMessage(sender, "Great, what can I do for you today?")
   }else if (text.toLowerCase() === "help") {
-    sendTextMessage(sender, "Help:\n Type <b>'Pic'</b> to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+    sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
     sendTextMessage(sender, "Hello " + sender)
   }
@@ -183,6 +185,10 @@ function handleMessage(sender,text) {
 // Handle stiker
 function handlSticker(sender,sticker_id) {
   sendSticker(sender,sticker_id);
+}
+// get user
+function getUser(id) {
+
 }
 // Spin up the server
 app.listen(app.get('port'), function() {
