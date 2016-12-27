@@ -164,7 +164,7 @@ function sendGenericMessage(sender) {
 // Handle message
 function handleMessage(sender,text) {
   let hello = false
-  let name = getUser(id)
+  let name = getUser(sender)
   console.log(name);
   if (text === 'Pic') {
       sendGenericMessage(sender)
