@@ -202,7 +202,6 @@ function getUser(id) {
           console.log(response);
         }
     })
-    return name
 }
 // Spin up the server
 app.listen(app.get('port'), function() {
