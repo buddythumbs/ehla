@@ -164,6 +164,8 @@ function sendGenericMessage(sender) {
 // Handle message
 function handleMessage(sender,text) {
   let hello = false
+  let name = getUser(id)
+  console.log(name);
   if (text === 'Pic') {
       sendGenericMessage(sender)
   }else if (text.match(/fuck/i)) {
@@ -188,7 +190,22 @@ function handlSticker(sender,sticker_id) {
 }
 // get user
 function getUser(id) {
-
+  let name = request({
+      url: 'https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token,
+      qs: {access_token:token},
+      method: 'POST',
+      json: json,
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        } else {
+          let firstName = response.body.first_name
+          return firstName
+        }
+    })
+    return name
 }
 // Spin up the server
 app.listen(app.get('port'), function() {
