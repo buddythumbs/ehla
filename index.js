@@ -201,17 +201,43 @@ function getUser(id,text) {
 // Get weather
 function getWeather(sender,user) {
   let url = 'http://api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
-  console.log(url);
   request(url,function (error, response, body) {
-    console.log("Response :",response);
-    console.log("Body:",body);
-    console.log("Error:",error);
     if (!error && response.statusCode == 200) {
-      console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let weather = JSON.parse(body)
-      sendTextMessage(sender,user.name + ", the weather in " + weather.name + " is " + weather.weather[0].description + "\n" +
-         "Current temperature is " +  weather.main.temp + " c\n"
-      );
+
+      let messageData = {
+          "attachment": {
+              "type": "template",
+              "payload": {
+                  "template_type": "generic",
+                  "elements": [{
+                      "title": weather.name,
+                      "subtitle": weather.weather[0].description + weather.main.temp + " c",
+                      "image_url": "http://openweathermap.org/img/w/"+weather[0].icon+".png",
+                      "buttons": [{
+                          "type": "postback",
+                          "title": "Postback",
+                          "payload": "Weather template",
+                      }],
+                  }]
+              }
+          }
+      }
+      request({
+          url: 'https://graph.facebook.com/v2.6/me/messages',
+          qs: {access_token:token},
+          method: 'POST',
+          json: {
+              recipient: {id:sender},
+              message: messageData,
+          }
+      }, function(error, response, body) {
+          if (error) {
+              console.log('Error sending messages: ', error)
+          } else if (response.body.error) {
+              console.log('Error: ', response.body.error)
+          }
+      })
     }
   })
 }
