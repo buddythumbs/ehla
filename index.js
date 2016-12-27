@@ -6,19 +6,17 @@ const request = require('request')
 const app = express()
 const martin = '1021053801339481'
 const laragh = '1162641380518805'
+const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
+// Setup port
 app.set('port', (process.env.PORT || 5000))
-
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
-
 // Process application/json
 app.use(bodyParser.json())
-
 // Index route
 app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
 })
-
 // for Facebook verification
 app.get('/webhook', function (req, res) {
     if (req.query['hub.verify_token'] === 'secret-token') {
@@ -36,11 +34,10 @@ app.post('/webhook', function (req, res) {
     console.log(JSON.stringify(event,null,2));
     if (event.message && event.message.text) {
         let text = event.message.text
-        console.log(JSON.stringify(event,null,2));
         handleMessage(sender,text);
     }else if(event.message.sticker_id){
-      if(event.message.sticker_id === '369239263222822'){
-        sendTextMessage(sender, "Thumbs up to you too!")
+      if (event.message.sticker_id) {
+        handlSticker(sender, event.message.sticker_id)
       }
     }
     if (event.postback) {
@@ -51,8 +48,13 @@ app.post('/webhook', function (req, res) {
   }
   res.sendStatus(200)
 })
-
-const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
+// Sonos route
+app.post('/sonos',function (req,res) {
+  let arg = req.body.arg;
+  var spawn = require("child_process").spawn;
+  var process = spawn('python',["sonos-controller.py", arg]);
+  res.sendStatus(200)
+})
 // Return function for webhook
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
@@ -61,6 +63,38 @@ function sendTextMessage(sender, text) {
         message: messageData,
     }
     console.log(json);
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:token},
+        method: 'POST',
+        json: json,
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+// Return function for webhook
+function sendSticker(sender,id) {
+    let messageData = {
+      "sticker_id": 369239263222822,
+       "attachments": [
+         {
+           "type": "image",
+           "payload": {
+             "url": "https://scontent.xx.fbcdn.net/t39.1997-6/851557_369239266556155_759568595_n.png?_nc_ad=z-m",
+             "sticker_id": 369239263222822
+           }
+         }
+       ]
+     }
+    let json = {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    // console.log(json);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
@@ -142,7 +176,10 @@ function handleMessage(sender,text) {
     sendTextMessage(sender, "Hello " + sender)
   }
 }
-
+// Handle stiker
+function handlSticker(sender,sticker_id) {
+  sendSticker(sender,sticker_id);
+}
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
