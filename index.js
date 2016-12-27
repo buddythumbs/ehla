@@ -45,11 +45,13 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            if (text === 'Generic') {
+            if (text === 'Pic') {
                 sendGenericMessage(sender)
                 continue
+            }else if (text.match(/fuck/i)) {
+              sendTextMessage(sender, "No fuck you")
             }
-            sendTextMessage(sender, "Hi there" + sender)
+            sendTextMessage(sender, "Hi there" + sender);
         }
     }
     res.sendStatus(200)
@@ -83,7 +85,7 @@ function sendGenericMessage(sender) {
             "payload": {
                 "template_type": "generic",
                 "elements": [{
-                    "title": "First card",
+                    "title": "This is a random pic",
                     "subtitle": "Element #1 of an hscroll",
                     "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
                     "buttons": [{
