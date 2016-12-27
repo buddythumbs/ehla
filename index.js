@@ -199,9 +199,9 @@ function getUser(id,text) {
 }
 // Get weather
 function getWeather(sender,user) {
-  request('api.openweathermap.org/data/2.5/weather?q='+location +
-  '&units=metric&APPID=' + weatherAPI
-    ,function (error, response, body) {
+  let url = 'api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
+  console.log(url);
+  request(url,function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let weather = JSON.parse(body)
