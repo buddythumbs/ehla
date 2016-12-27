@@ -204,7 +204,6 @@ function getWeather(sender,user) {
   request(url,function (error, response, body) {
     if (!error && response.statusCode == 200) {
       let weather = JSON.parse(body)
-
       let messageData = {
           "attachment": {
               "type": "template",
@@ -213,7 +212,7 @@ function getWeather(sender,user) {
                   "elements": [{
                       "title": weather.name,
                       "subtitle": weather.weather[0].description + weather.main.temp + " c",
-                      "image_url": "http://openweathermap.org/img/w/"+weather[0].icon+".png",
+                      "image_url": "http://openweathermap.org/img/w/"+weather.weather[0].icon+".png",
                       "buttons": [{
                           "type": "postback",
                           "title": "Postback",
