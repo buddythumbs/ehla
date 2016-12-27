@@ -32,19 +32,22 @@ app.post('/webhook', function (req, res) {
     let sender = event.sender.id
     console.log(event.sender);
     console.log(JSON.stringify(event,null,2));
-    if (event.message && event.message.text) {
-        let text = event.message.text
-        handleMessage(sender,text);
-    }else if(event.message.sticker_id){
-      if (event.message.sticker_id) {
-        handlSticker(sender, event.message.sticker_id)
+    if (event.message) {
+      if ( && event.message.text) {
+          let text = event.message.text
+          handleMessage(sender,text);
+      }else if(event.message.sticker_id){
+        if (event.message.sticker_id) {
+          handlSticker(sender, event.message.sticker_id)
+        }
+      }
+      if (event.postback) {
+        let text = JSON.stringify(event.postback)
+        sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
+        continue
       }
     }
-    if (event.postback) {
-      let text = JSON.stringify(event.postback)
-      sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-      continue
-    }
+
   }
   res.sendStatus(200)
 })
