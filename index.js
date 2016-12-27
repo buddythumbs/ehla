@@ -204,7 +204,7 @@ function getUser(id) {
   //   })
   request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log(body) // Show the HTML for the Google homepage.
+      console.log(JSON.stringify(body,null,2)) // Show the HTML for the Google homepage.
     }
   })
 }
