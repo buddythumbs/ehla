@@ -185,7 +185,8 @@ function handleMessage(sender,text,user) {
   }else if (text.toLowerCase() === "help") {
     sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
-    sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...😐 yet")
+    sendTextMessage(sender, "😳💩")
+    sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet")
   }
 }
 // Handle stiker
