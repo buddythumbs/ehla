@@ -36,7 +36,7 @@ app.post('/webhook', function (req, res) {
     if (event.message) {
       if (event.message && event.message.text) {
           let text = event.message.text
-          console.log(event.message.From.Name);
+          // console.log(event.message.From.Name);
           handleMessage(sender,text);
       }else if(event.message.sticker_id){
         if (event.message.sticker_id) {
