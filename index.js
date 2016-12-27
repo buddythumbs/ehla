@@ -165,7 +165,6 @@ function sendGenericMessage(sender) {
 }
 // Handle message
 function handleMessage(sender,text,user) {
-  let hello = false
   // console.log(name);
   if (text === 'Pic') {
     sendGenericMessage(sender)
@@ -175,9 +174,7 @@ function handleMessage(sender,text,user) {
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
   }else if (text.match(/hey|hello|hi/i)){
-    sendTextMessage(sender, "Hello " + user.first_name + " , how are you today?")
-  }else if (text.match(/good/i)) {
-    sendTextMessage(sender, "Great, what can I do for you today?")
+    sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
   }else if (text.toLowerCase() === "help") {
     sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
   } else {
