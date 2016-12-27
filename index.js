@@ -132,18 +132,14 @@ function sendGenericMessage(sender) {
 function handleMessage(sender,text) {
   if (text === 'Pic') {
       sendGenericMessage(sender)
-      continue
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
-    continue
   }else if (sender === '1021053801339481') {
     sendTextMessage(sender, "Hello Martin , how are you today?")
-    continue
   }else if (text.match(/good/i)) {
     sendTextMessage(sender, "Great, what can I do for you today?")
   } else {
     sendTextMessage(sender, "Hello " + sender)
-    continue
   }
 }
 
