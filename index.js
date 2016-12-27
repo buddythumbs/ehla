@@ -209,8 +209,7 @@ function getWeather(sender,user) {
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let weather = JSON.parse(body)
-      sendTextMessage(sender, "Hello " + sender + "\n" +
-        "The weather in " + weather.name + " is " + weather.weather[0].description + "\n" +
+      sendTextMessage(sender,user.name + ", the weather in " + weather.name + " is " + weather.weather[0].description + "\n" +
          "Current temperature is " +  weather.main.temp + " c\n"
       );
     }
