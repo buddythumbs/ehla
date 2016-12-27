@@ -4,7 +4,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
-const token = "EAADhwQPQXKcBAGqur0ATw7G904DEaFhLgXTZBvr6JJWcZCeYmKA3ZAWznCZA5k3RAg5UgNpvn0estSr3hyhPyB7eeFsfuzC9RDnZA9y8LCxnMz96xUh3ZCfEnTh56vesHJFKvIqwlvfASNITWP15mxSEOF1vv3sQCNGorZCS7LpiAZDZD"
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
@@ -38,7 +37,7 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
-
+const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 // Return function for webhook
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
