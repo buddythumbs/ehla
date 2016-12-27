@@ -211,13 +211,8 @@ function getWeather(sender,user) {
                   "template_type": "generic",
                   "elements": [{
                       "title": weather.name,
-                      "subtitle": weather.weather[0].description + weather.main.temp + " c",
+                      "subtitle": weather.weather[0].description + " - " + weather.main.temp + " c",
                       "image_url": "http://openweathermap.org/img/w/"+weather.weather[0].icon+".png",
-                      "buttons": [{
-                          "type": "postback",
-                          "title": "Postback",
-                          "payload": "Weather template",
-                      }],
                   }]
               }
           }
