@@ -190,18 +190,23 @@ function handlSticker(sender,sticker_id) {
 }
 // get user
 function getUser(id) {
-  request({
-      url: 'https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token,
-      method: 'GET',
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        } else {
-          console.log(response);
-        }
-    })
+  // request({
+  //     url: 'https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token,
+  //     method: 'GET',
+  //   }, function(error, response, body) {
+  //       if (error) {
+  //           console.log('Error sending messages: ', error)
+  //       } else if (response.body.error) {
+  //           console.log('Error: ', response.body.error)
+  //       } else {
+  //         console.log(response);
+  //       }
+  //   })
+  request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body) // Show the HTML for the Google homepage.
+    }
+  })
 }
 // Spin up the server
 app.listen(app.get('port'), function() {
