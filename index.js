@@ -200,7 +200,7 @@ function getUser(id,text) {
 }
 // Get weather
 function getWeather(sender,user) {
-  let url = 'https://api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
+  let url = 'http://api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
   console.log(url);
   request(url,function (error, response, body) {
     console.log("Response :",response);
