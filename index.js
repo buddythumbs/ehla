@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 // Index route
 app.get('/', function (req, res) {
+    console.log(req.protocol,req.get('host'));
     res.send('Hello world, I am a chat bot')
 })
 // for Facebook verification
@@ -202,8 +203,9 @@ function getWeather(sender,user) {
   let url = 'api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
   console.log(url);
   request(url,function (error, response, body) {
-    console.log("Response :",response);
-    console.log("Body:",body);
+    console.log("Response :",JSON.parse(response));
+    console.log("Body:",JSON.parse(body));
+    console.log("Error:",error);
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let weather = JSON.parse(body)
@@ -218,4 +220,5 @@ function getWeather(sender,user) {
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
+    console.log(app.get('host'));
 })
