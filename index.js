@@ -162,7 +162,7 @@ function sendGenericMessage(sender) {
     })
 }
 // Handle message
-function handleMessage(sender,text,name) {
+function handleMessage(sender,text,user) {
   let hello = false
   console.log(name);
   if (text === 'Pic') {
@@ -170,11 +170,7 @@ function handleMessage(sender,text,name) {
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
   }else if (text.match(/hey|hello|hi/i)){
-    if(sender === martin) {
-      sendTextMessage(sender, "Hello Martin , how are you today?")
-    }else if (sender === laragh) {
-      sendTextMessage(sender, "Hello Laragh , how are you today?")
-    }
+    sendTextMessage(sender, "Hello " + user.first_name + " , how are you today?")
   }else if (text.match(/good/i)) {
     sendTextMessage(sender, "Great, what can I do for you today?")
   }else if (text.toLowerCase() === "help") {
@@ -193,7 +189,7 @@ function getUser(id,text) {
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let user = JSON.parse(body)
-      handleMessage(id,text,name);
+      handleMessage(id,text,user);
     }
   })
 }
