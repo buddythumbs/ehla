@@ -164,7 +164,7 @@ function sendGenericMessage(sender) {
 // Handle message
 function handleMessage(sender,text,user) {
   let hello = false
-  console.log(name);
+  // console.log(name);
   if (text === 'Pic') {
       sendGenericMessage(sender)
   }else if (text.match(/fuck/i)) {
