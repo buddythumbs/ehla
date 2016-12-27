@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+const martin = '1021053801339481'
+const laragh = '1162641380518805'
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
@@ -130,12 +132,17 @@ function sendGenericMessage(sender) {
 }
 // Handle message
 function handleMessage(sender,text) {
+  let hello = false
   if (text === 'Pic') {
       sendGenericMessage(sender)
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
-  }else if (sender === '1021053801339481') {
-    sendTextMessage(sender, "Hello Martin , how are you today?")
+  }else if (text.match(/hey|hello|hi/i))){
+    if(sender === martin) {
+      sendTextMessage(sender, "Hello Martin , how are you today?")
+    }else if (sender === laragh) {
+      sendTextMessage(sender, "Hello Shnookums , how are you today?")
+    }
   }else if (text.match(/good/i)) {
     sendTextMessage(sender, "Great, what can I do for you today?")
   } else {
