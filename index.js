@@ -169,6 +169,7 @@ function handleMessage(sender,text,user) {
   if (text === 'Pic') {
     sendGenericMessage(sender)
   }else if (text.match(/weather/i)) {
+    console.log("Getting weather");
     getWeather(sender,user)
   }else if (text.match(/fuck/i)) {
     sendTextMessage(sender, "No fuck you")
@@ -198,9 +199,8 @@ function getUser(id,text) {
 }
 // Get weather
 function getWeather(sender,user) {
-  request('api.openweathermap.org/data/2.5/weather?q='+
-    location + '&units=metric&APPID=' +
-    weatherAPI
+  request('api.openweathermap.org/data/2.5/weather?q='+location +
+  '&units=metric&APPID=' + weatherAPI
     ,function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
