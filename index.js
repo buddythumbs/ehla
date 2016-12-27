@@ -39,8 +39,9 @@ app.post('/webhook', function (req, res) {
         console.log(JSON.stringify(event,null,2));
         handleMessage(sender,text);
     }else if(event.message.sticker_id){
-      if(event.message.sticker_id === '369239263222822')
-      sendTextMessage(sender, "Thumbs up to you too!")
+      if(event.message.sticker_id === '369239263222822'){
+        sendTextMessage(sender, "Thumbs up to you too!")
+      }
     }
     if (event.postback) {
       let text = JSON.stringify(event.postback)
