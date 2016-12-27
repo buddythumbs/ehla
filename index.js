@@ -37,10 +37,10 @@ app.post('/webhook', function (req, res) {
       if (event.message && event.message.text) {
           let text = event.message.text
           // console.log(event.message.From.Name);
-          handleMessage(sender,text);
+          getUser(sender,text);
       }else if(event.message.sticker_id){
         if (event.message.sticker_id) {
-          handlSticker(sender, event.message.sticker_id)
+          getUser(sender, event.message.sticker_id)
         }
       }
     }
@@ -162,7 +162,7 @@ function sendGenericMessage(sender) {
     })
 }
 // Handle message
-function handleMessage(sender,text) {
+function handleMessage(sender,text,name) {
   let hello = false
   let name = getUser(sender)
   console.log(name);
@@ -189,10 +189,12 @@ function handlSticker(sender,sticker_id) {
   sendSticker(sender,sticker_id);
 }
 // get user
-function getUser(id) {
+function getUser(id,text) {
   request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
+      let user = JSON.parse(body)
+      handleMessage(id,text,name);
     }
   })
 }
