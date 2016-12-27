@@ -41,13 +41,12 @@ app.post('/webhook', function (req, res) {
           handlSticker(sender, event.message.sticker_id)
         }
       }
-      if (event.postback) {
-        let text = JSON.stringify(event.postback)
-        sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-        continue
-      }
     }
-
+    if (event.postback) {
+      let text = JSON.stringify(event.postback)
+      sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+      continue
+    }
   }
   res.sendStatus(200)
 })
