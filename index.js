@@ -37,38 +37,43 @@ app.get('/webhook/', function (req, res) {
 //     }
 //     res.sendStatus(200)
 // })
-
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0].messaging
-    for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.entry[0].messaging[i]
-        let sender = event.sender.id
-        if (event.message && event.message.text) {
-            let text = event.message.text
-            if (text === 'Pic') {
-                sendGenericMessage(sender)
-                continue
-            }else if (text.match(/fuck/i)) {
-              sendTextMessage(sender, "No fuck you")
-            }
-            sendTextMessage(sender, "Hi there" + sender);
+  let messaging_events = req.body.entry[0].messaging
+  for (let i = 0; i < messaging_events.length; i++) {
+    let event = req.body.entry[0].messaging[i]
+    let sender = event.sender.id
+    if (event.message && event.message.text) {
+        let text = event.message.text
+        if (text === 'Pic') {
+            sendGenericMessage(sender)
+            continue
+        }else if (text.match(/fuck/i)) {
+          sendTextMessage(sender, "No fuck you")
         }
     }
-    res.sendStatus(200)
+    if (event.postback) {
+      let text = JSON.stringify(event.postback)
+      sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
+      continue
+    }
+  }
+  res.sendStatus(200)
 })
 
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 // Return function for webhook
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
+    let json = {
+        recipient: {id:sender},
+        message: messageData,
+    }
+    console.log(json);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
         method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
+        json: json,
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
