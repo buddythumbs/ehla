@@ -202,6 +202,8 @@ function getWeather(sender,user) {
   let url = 'api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
   console.log(url);
   request(url,function (error, response, body) {
+    console.log("Response :",response);
+    console.log("Body:",body);
     if (!error && response.statusCode == 200) {
       console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
       let weather = JSON.parse(body)
