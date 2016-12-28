@@ -3,12 +3,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const app = express()
 const martin = '1021053801339481'
 const laragh = '1162641380518805'
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 const weatherAPI = '8ba0a17ada98c62ad89a2f76f571960d'
 const location = 'Maynooth,ie'
+const app = express()
+
 // Setup port
 app.set('port', (process.env.PORT || 5000))
 // Process application/x-www-form-urlencoded
@@ -16,19 +17,19 @@ app.use(bodyParser.urlencoded({extended: false}))
 // Process application/json
 app.use(bodyParser.json())
 // Index route
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     console.log(req.protocol,req.get('host'));
     res.send('Hello world, I am a chat bot')
 })
 // for Facebook verification
-app.get('/webhook', function (req, res) {
+app.get('/webhook', (req, res) => {
     if (req.query['hub.verify_token'] === 'secret-token') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
 })
 // Endpoint webhook
-app.post('/webhook', function (req, res) {
+app.post('/webhook', (req, res) => {
   let messaging_events = req.body.entry[0].messaging
   for (let i = 0; i < messaging_events.length; i++) {
     let event = req.body.entry[0].messaging[i]
@@ -55,7 +56,7 @@ app.post('/webhook', function (req, res) {
   res.sendStatus(200)
 })
 // Sonos route
-app.post('/sonos',function (req,res) {
+app.post('/sonos',(req,res) => {
   let arg = req.body.arg;
   var spawn = require("child_process").spawn;
   var process = spawn('python',["sonos-controller.py", arg]);
