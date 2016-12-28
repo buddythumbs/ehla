@@ -10,11 +10,11 @@ const wUrl = 'http://api.openweathermap.org/data/2.5/weather?q='+location +'&uni
 
 module.exports = {
   getWeather : () => {
-    return new Promise(function(resolve, reject) {
-      request(wUrl,function (error, response, body) {
+    return new Promise((resolve, reject) => {
+      request(wUrl,(error, response, body) => {
         if (!error && response.statusCode == 200) {
           resolve(JSON.parse(body))
-        }else {
+        } else {
           reject(error || response.body.error)
         }
       })

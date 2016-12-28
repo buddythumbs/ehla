@@ -64,7 +64,7 @@ module.exports = {
     if (text === 'Pic') {
       module.exports.sendGenericMessage(sender)
     }else if (text.match(/weather|conditions|forecast|outside/i)) {
-      weather.getWeather().then(function(response) {
+      weather.getWeather().then((response) => {
         let messageData = {
             "attachment": {
                 "type": "template",
@@ -114,7 +114,7 @@ module.exports = {
     module.exports.sendSticker(sender,sticker_id);
   },
   getUser : (id,text) => {
-    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
+    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         console.log(JSON.parse(body))
         let user = JSON.parse(body)
