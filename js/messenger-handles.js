@@ -90,7 +90,7 @@ module.exports = {
           }
         }
     },
-  handleMessage : (sender,text,user) => {
+  handleMessage : function (sender,text,user) {
     // console.log(name);
     if (text === 'Pic') {
       thissendGenericMessage(sender)
