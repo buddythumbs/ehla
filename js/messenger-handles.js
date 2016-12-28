@@ -6,44 +6,13 @@ const weather = require('./weather');
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 
 module.exports = {
-  sendTextMessage: (sender, text) => {
+  sendTextMessage : (sender, text) => {
       let messageData = { text:text }
       let json = {
           recipient: {id:sender},
           message: messageData,
       }
       console.log(json);
-      request({
-          url: 'https://graph.facebook.com/v2.6/me/messages',
-          qs: {access_token:token},
-          method: 'POST',
-          json: json,
-      }, function(error, response, body) {
-          if (error) {
-              console.log('Error sending messages: ', error)
-          } else if (response.body.error) {
-              console.log('Error: ', response.body.error)
-          }
-      })
-  },
-  sendSticker : (sender,id) => {
-      let messageData = {
-        "sticker_id": 369239263222822,
-         "attachments": [
-           {
-             "type": "image",
-             "payload": {
-               "url": "https://scontent.xx.fbcdn.net/t39.1997-6/851557_369239266556155_759568595_n.png?_nc_ad=z-m",
-               "sticker_id": 369239263222822
-             }
-           }
-         ]
-       }
-      let json = {
-          recipient: {id:sender},
-          message: messageData,
-      }
-      // console.log(json);
       request({
           url: 'https://graph.facebook.com/v2.6/me/messages',
           qs: {access_token:token},
