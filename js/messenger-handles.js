@@ -64,9 +64,7 @@ module.exports = {
     if (text === 'Pic') {
       module.exports.sendGenericMessage(sender)
     }else if (text.match(/weather|conditions|forecast|outside/i)) {
-      console.log("Getting weather");
-      weather.getWeather(sender,user).then(function(response) {
-        console.log("Success!", response);
+      weather.getWeather().then(function(response) {
         let messageData = {
             "attachment": {
                 "type": "template",
@@ -96,7 +94,7 @@ module.exports = {
             }
         })
         if (response.main.temp < 6) {
-          fbm.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+          module.exports.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
         }
       }, function(error) {
         console.error("Failed!", error);
