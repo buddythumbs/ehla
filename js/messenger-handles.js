@@ -114,9 +114,9 @@ module.exports = {
   getUser : (id,text) => {
     request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
+        console.log(JSON.parse(body))
         let user = JSON.parse(body)
-        this.handleMessage(id,text,user);
+        this.handleMessage(id,text,user)
       }
     })
   },
