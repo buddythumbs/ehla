@@ -245,7 +245,7 @@ function getWeather(sender,user) {
 }
 
 // Spin up the server
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
     console.log('running on port', app.get('port'))
     console.log(app.get('host'));
 })
