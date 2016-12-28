@@ -116,7 +116,7 @@ module.exports = {
       if (!error && response.statusCode == 200) {
         console.log(JSON.parse(body))
         let user = JSON.parse(body)
-        this.handleMessage(id,text,user)
+        handleMessage(id,text,user)
       }
     })
   },
