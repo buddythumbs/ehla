@@ -90,33 +90,33 @@ module.exports = {
           }
         }
     },
-  handleMessage : function (sender,text,user) {
+  handleMessage : (sender,text,user) => {
     // console.log(name);
     if (text === 'Pic') {
-      thissendGenericMessage(sender)
+      exports.sendGenericMessage(sender)
     }else if (text.match(/weather|conditions|forecast|outside/i)) {
       console.log("Getting weather");
       weather.getWeather(sender,user)
     }else if (text.match(/fuck/i)) {
-      sendTextMessage(sender, "No fuck you")
+      exports.sendTextMessage(sender, "No fuck you")
     }else if (text.match(/hey|hello|hi/i)){
-      sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
+      exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
     }else if (text.toLowerCase() === "help") {
-      sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+      exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
     } else {
-      sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet")
-      sendTextMessage(sender, "😳💩")
+      exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet")
+      exports.sendTextMessage(sender, "😳💩")
     }
   },
   handlSticker : (sender,sticker_id) => {
-    sendSticker(sender,sticker_id);
+    exports.sendSticker(sender,sticker_id);
   },
   getUser : (id,text) => {
     request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log(JSON.parse(body))
         let user = JSON.parse(body)
-        handleMessage(id,text,user)
+        exports.handleMessage(id,text,user)
       }
     })
   },
