@@ -116,7 +116,7 @@ module.exports = {
       if (!error && response.statusCode == 200) {
         console.log(JSON.parse(body)) // Show the HTML for the Google homepage.
         let user = JSON.parse(body)
-        handleMessage(id,text,user);
+        this.handleMessage(id,text,user);
       }
     })
   },
