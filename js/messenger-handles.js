@@ -65,7 +65,42 @@ module.exports = {
       module.exports.sendGenericMessage(sender)
     }else if (text.match(/weather|conditions|forecast|outside/i)) {
       console.log("Getting weather");
-      weather.getWeather(sender,user)
+      weather.getWeather(sender,user).then(function(response) {
+        console.log("Success!", response);
+        let messageData = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": response.name,
+                        "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                        "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                    }]
+                }
+            }
+        }
+        request({
+            url: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: {access_token:token},
+            method: 'POST',
+            json: {
+                recipient: {id:sender},
+                message: messageData,
+            }
+        }, function(error, response, body) {
+            if (error) {
+                console.log('Error sending messages: ', error)
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error)
+            }
+        })
+        if (response.main.temp < 6) {
+          fbm.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+        }
+      }, function(error) {
+        console.error("Failed!", error);
+      })
     }else if (text.match(/fuck/i)) {
       module.exports.sendTextMessage(sender, "No fuck you")
     }else if (text.match(/hey|hello|hi/i)){
