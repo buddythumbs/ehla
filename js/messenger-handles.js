@@ -113,7 +113,9 @@ module.exports = {
             let arg = text.replace(/sonos/i,"").trim();
             var spawn = require("child_process").spawn;
             var process = spawn('python',["sonos-controller.py", arg]);
+            console.log("Spawned python");
             process.stdout.on('data', (data)=>{
+              console.log("Python callback")
               module.exports.sendTextMessage(sender, data)
             });
           } else {
