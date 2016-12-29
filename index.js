@@ -25,7 +25,7 @@ let logger = (req,res,next) => {
   console.log(JSON.stringify(req.body,null,2));
   next();
 }
-
+// add middleware
 app.use(logger)
 // Index route
 app.get('/', (req, res) => {
@@ -39,9 +39,10 @@ app.get('/webhook/', (req, res) => {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
+    res.sendStatus(200)
 })
 // Endpoint webhook
-app.post('/webhook', (req, res) => {
+app.post('/webhook/', (req, res) => {
   let messaging_events = req.body.entry[0].messaging
   for (let i = 0; i < messaging_events.length; i++) {
     let event = req.body.entry[0].messaging[i]
@@ -65,7 +66,7 @@ app.post('/webhook', (req, res) => {
   res.sendStatus(200)
 })
 // Sonos route
-app.post('/sonos',(req,res) => {
+app.post('/sonos/',(req,res) => {
   let arg = req.body.arg;
   var spawn = require("child_process").spawn;
   var process = spawn('python',["sonos-controller.py", arg]);

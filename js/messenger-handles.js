@@ -126,16 +126,16 @@ module.exports = {
     let mediaType = message.attachments.type
     switch (type) {
       case "audio":
-
+      console.log('Audio');
         break;
       case "location":
-
+      console.log('Location');
         break;
       case "image":
-
+      console.log('Image');
         break;
       case "image":
-
+      console.log('Image');
         break;
       default:
 
