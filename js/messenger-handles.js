@@ -142,22 +142,23 @@ module.exports = {
   },
   handleMedia: (sender,user,event) => {
     console.log(event);
-    let mediaType = event.attachments.type
-    switch (type) {
-      case "audio":
-      console.log('Audio');
-        break;
-      case "location":
-      console.log('Location');
-        break;
-      case "image":
-      console.log('Image');
-        break;
-      case "image":
-      console.log('Image');
-        break;
-      default:
+    let mediaType = event.attachments.forEach((attachment)=>{
+      switch (attachment.type) {
+        case "audio":
+        console.log('Audio');
+          break;
+        case "location":
+        console.log('Location');
+          break;
+        case "image":
+        console.log('Image');
+          break;
+        case "image":
+        console.log('Image');
+          break;
+        default:
 
-    }
+      }
+    })
   },
 };
