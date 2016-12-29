@@ -110,7 +110,7 @@ module.exports = {
           }else if (text.toLowerCase() === "help") {
             module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           }else if (text.toLowerCase().match(/sonos/)) {
-            let arg = req.body.arg;
+            let arg = text.replace(/sonos/i,"").trim();
             var spawn = require("child_process").spawn;
             var process = spawn('python',["sonos-controller.py", arg]);
             res.sendStatus(200)
