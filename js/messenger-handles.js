@@ -66,7 +66,7 @@ module.exports = {
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
         if (event.message && event.message.text) {
-          let text = messaging_event.message.text
+          let text = event.message.text
           if (text.match(/weather|conditions|forecast|outside/i)) {
             weather.getWeather().then((response) => {
               let messageData = {
@@ -113,12 +113,12 @@ module.exports = {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }
         }else{
-          fbm.handleMedia(sender,user,event);
+          module.exports.handleMedia(sender,user,event);
         }
       }
       if (event.postback) {
         let text = JSON.stringify(event.postback)
-        fbm.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+        module.exports.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
       }
     }, function(error, response, body) {
         if (error) {
@@ -139,9 +139,9 @@ module.exports = {
       })
     })
   },
-  handleMedia: (sender,user,message) => {
+  handleMedia: (sender,user,event) => {
     console.log(message);
-    let mediaType = message.attachments.type
+    let mediaType = event.attachments.type
     switch (type) {
       case "audio":
       console.log('Audio');
