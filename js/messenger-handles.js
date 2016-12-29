@@ -65,7 +65,7 @@ module.exports = {
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
         if (event.message && event.message.text) {
-          let text = event.message.text
+          let text = messaging_event.message.text
           if (text.match(/weather|conditions|forecast|outside/i)) {
             weather.getWeather().then((response) => {
               let messageData = {
@@ -138,7 +138,8 @@ module.exports = {
       })
     })
   },
-  handleMedia: (sender,message) => {
+  handleMedia: (sender,user,message) => {
+    console.log(message);
     let mediaType = message.attachments.type
     switch (type) {
       case "audio":
