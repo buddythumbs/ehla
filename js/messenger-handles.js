@@ -120,6 +120,8 @@ module.exports = {
             process.stdout.on('end', (data)=>{
               console.log(data.toString())
             });
+          }else if (text.match(/thanks|nice|great/)) {
+            module.exports.sendTextMessage(sender, "beep boop 👍")
           } else {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }
@@ -165,7 +167,7 @@ module.exports = {
         console.log('Image');
         if (attachment.payload.sticker_id) {
           if (attachment.payload.sticker_id === 369239263222822) {
-            module.exports.sendTextMessage(sender, "beep boop 💻")
+            module.exports.sendTextMessage(sender, "beep boop 👍")
           }
         }
           break;
