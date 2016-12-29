@@ -21,10 +21,11 @@ app.use(bodyParser.urlencoded({extended: false}))
 // Process application/json
 app.use(bodyParser.json())
 // Log all incoming traffic
-let logger = (req,res,next)=>{
+let logger = (req,res,next) => {
   console.log(JSON.stringify(req.body,null,2));
   next();
 }
+
 app.use(logger)
 // Index route
 app.get('/', (req, res) => {
@@ -49,13 +50,10 @@ app.post('/webhook', (req, res) => {
     // console.log("Incoming event: ",JSON.stringify(event,null,2));
     if (event.message) {
       if (event.message && event.message.text) {
-          let text = event.message.text
-          // console.log(event.message.From.Name);
-          fbm.getUser(sender,text);
-      }else if(event.message.sticker_id){
-        if (event.message.sticker_id) {
-          fbm.getUser(sender, event.message.sticker_id)
-        }
+        let text = event.message.text
+        fbm.getUser(sender,text);
+      }else{
+        fbm.handleMedia(sender,event);
       }
     }
     if (event.postback) {

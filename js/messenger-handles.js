@@ -122,4 +122,23 @@ module.exports = {
       }
     })
   },
+  handleMedia: (sender,message) => {
+    let mediaType = message.attachments.type
+    switch (type) {
+      case "audio":
+
+        break;
+      case "location":
+
+        break;
+      case "image":
+
+        break;
+      case "image":
+
+        break;
+      default:
+
+    }
+  },
 };
