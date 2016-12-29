@@ -60,7 +60,8 @@ module.exports = {
         }
     },
   handleMessage : (messaging_event) => {
-    let event = messaging_event
+    console.log(JSON.stringify(event,null,2));
+    let event = messaging_event[0]
     let sender = event.sender.id
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
