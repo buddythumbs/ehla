@@ -115,8 +115,10 @@ module.exports = {
             var process = spawn('python',["sonos-controller.py", arg]);
             console.log("Spawned python");
             process.stdout.on('data', (data)=>{
-              console.log("Python callback")
-              module.exports.sendTextMessage(sender, data)
+              console.log(data)
+            });
+            process.stdout.on('end', (data)=>{
+              console.log(data)
             });
           } else {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
