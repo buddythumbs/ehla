@@ -43,34 +43,14 @@ app.get('/webhook/', (req, res) => {
 })
 // Endpoint webhook
 app.post('/webhook/', (req, res) => {
-  console.log("Entries ",JSON.stringify(req.body.entry));
+  console.log("Entries ",JSON.stringify(req.body.entry,null,2));
   req.body.entry.forEach((entry) =>{
-    console.log("Entry ",JSON.stringify(req.body.entry));
+    console.log("Entry ",JSON.stringify(req.body.entry,null,2));
     entry.messaging.forEach((messaging_event)=>{
-      console.log("event ",JSON.stringify(req.body.entry));
+      console.log("event ",JSON.stringify(req.body.entry,null,2));
       fbm.handleMessage(messaging_event)
     })
   })
-  let messaging_events = req.body.entry[0].messaging
-  for (let i = 0; i < messaging_events.length; i++) {
-    let event = req.body.entry[0].messaging[i]
-    let sender = event.sender.id
-    // console.log("Sender: ",event.sender);
-    // console.log("Incoming event: ",JSON.stringify(event,null,2));
-    if (event.message) {
-      if (event.message && event.message.text) {
-        let text = event.message.text
-        fbm.getUser(sender,text);
-      }else{
-        fbm.handleMedia(sender,event);
-      }
-    }
-    if (event.postback) {
-      let text = JSON.stringify(event.postback)
-      fbm.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
-      continue
-    }
-  }
   res.sendStatus(200)
 })
 // Sonos route
