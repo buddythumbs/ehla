@@ -142,7 +142,7 @@ module.exports = {
   },
   handleMedia: (sender,user,event) => {
     console.log(event);
-    let mediaType = event.attachments.forEach((attachment)=>{
+    let mediaType = event.message.attachments.forEach((attachment)=>{
       switch (attachment.type) {
         case "audio":
         console.log('Audio');
