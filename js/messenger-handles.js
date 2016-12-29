@@ -113,6 +113,7 @@ module.exports = {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }
         }else{
+          console.log("Handling mediaType");
           module.exports.handleMedia(sender,user,event);
         }
       }
@@ -140,7 +141,7 @@ module.exports = {
     })
   },
   handleMedia: (sender,user,event) => {
-    console.log(message);
+    console.log(event);
     let mediaType = event.attachments.type
     switch (type) {
       case "audio":
