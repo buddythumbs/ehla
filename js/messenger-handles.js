@@ -113,7 +113,9 @@ module.exports = {
             let arg = text.replace(/sonos/i,"").trim();
             var spawn = require("child_process").spawn;
             var process = spawn('python',["sonos-controller.py", arg]);
-            res.sendStatus(200)
+            process.stdout.on('data', (data)=>{
+              module.exports.sendTextMessage(sender, data)
+            });
           } else {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }

@@ -1,13 +1,15 @@
+#!/usr/bin/env python3
+
 import speech_recognition as sr
 import urllib
 from os import path
-#testfile = urllib.URLopener()
-#testfile.retrieve("https://cdn.fbsbx.com/v/t59.3654-21/15595180_10207478447948022_5696498004668710912_n.aac/audioclip-1483040347098-1294.aac?oh=a7bba6033906c2814181a7bbca784a98&oe=5866F774",
-#"audioclip.aac")
+testfile = urllib.URLopener()
+testfile.retrieve("https://cdn.fbsbx.com/v/t59.3654-21/15595180_10207478447948022_5696498004668710912_n.aac/audioclip-1483040347098-1294.aac?oh=a7bba6033906c2814181a7bbca784a98&oe=5866F774",
+"audioclip.aac")
 #AUDIO_FILE = urllib.urlopen("https://cdn.fbsbx.com/v/t59.3654-21/15595180_10207478447948022_5696498004668710912_n.aac/audioclip-1483040347098-1294.aac?oh=a7bba6033906c2814181a7bbca784a98&oe=5866F774")
 # obtain path to "english.wav" in the same folder as this script
 #AUDIO_FILE = "audioclip.aac"
-AUDIO_FILE = "/Users/martinoleary/audioclip.aac"
+#AUDIO_FILE = "/Users/martinoleary/audioclip.aac"
 #AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "chinese.flac")
 
 # use the audio file as the audio source
