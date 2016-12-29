@@ -59,67 +59,83 @@ module.exports = {
           }
         }
     },
-  handleMessage : (sender,text,user) => {
-    // console.log(name);
-    if (text === 'Pic') {
-      module.exports.sendGenericMessage(sender)
-    }else if (text.match(/weather|conditions|forecast|outside/i)) {
-      weather.getWeather().then((response) => {
-        let messageData = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": response.name,
-                        "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                        "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                    }]
-                }
-            }
+  handleMessage : (messaging_event) => {
+    let event = messaging_event
+    let sender = event.sender.id
+    module.exports.getUser(sender).then((user)=>{
+      if (event.message) {
+        if (event.message && event.message.text) {
+          let text = event.message.text
+          if (text.match(/weather|conditions|forecast|outside/i)) {
+            weather.getWeather().then((response) => {
+              let messageData = {
+                  "attachment": {
+                      "type": "template",
+                      "payload": {
+                          "template_type": "generic",
+                          "elements": [{
+                              "title": response.name,
+                              "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                              "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                          }]
+                      }
+                  }
+              }
+              request({
+                  url: 'https://graph.facebook.com/v2.6/me/messages',
+                  qs: {access_token:token},
+                  method: 'POST',
+                  json: {
+                      recipient: {id:sender},
+                      message: messageData,
+                  }
+              }, function(error, response, body) {
+                  if (error) {
+                      console.log('Error sending messages: ', error)
+                  } else if (response.body.error) {
+                      console.log('Error: ', response.body.error)
+                  }
+              })
+              if (response.main.temp < 6) {
+                module.exports.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+              }
+            }, function(error) {
+              console.error("Failed!", error);
+            })
+          }else if (text.match(/fuck/i)) {
+            module.exports.sendTextMessage(sender, "No fuck you " + user.first_name)
+          }else if (text.match(/hey|hello|hi/i)){
+            module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
+          }else if (text.toLowerCase() === "help") {
+            module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+          } else {
+            module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
+          }
+        }else{
+          fbm.handleMedia(sender,user,event);
         }
-        request({
-            url: 'https://graph.facebook.com/v2.6/me/messages',
-            qs: {access_token:token},
-            method: 'POST',
-            json: {
-                recipient: {id:sender},
-                message: messageData,
-            }
-        }, function(error, response, body) {
-            if (error) {
-                console.log('Error sending messages: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
-            }
-        })
-        if (response.main.temp < 6) {
-          module.exports.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+      }
+      if (event.postback) {
+        let text = JSON.stringify(event.postback)
+        fbm.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+      }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
         }
-      }, function(error) {
-        console.error("Failed!", error);
-      })
-    }else if (text.match(/fuck/i)) {
-      module.exports.sendTextMessage(sender, "No fuck you")
-    }else if (text.match(/hey|hello|hi/i)){
-      module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
-    }else if (text.toLowerCase() === "help") {
-      module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
-    } else {
-      module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet")
-      module.exports.sendTextMessage(sender, "😳💩")
-    }
-  },
-  handlSticker : (sender,sticker_id) => {
-    module.exports.sendSticker(sender,sticker_id);
+    });
   },
   getUser : (id,text) => {
-    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        console.log(JSON.parse(body))
-        let user = JSON.parse(body)
-        module.exports.handleMessage(id,text,user)
-      }
+    return new Promise((resolve, reject) => {
+      request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+          resolve(JSON.parse(body))
+        } else {
+          reject(error || response.body.error)
+        }
+      })
     })
   },
   handleMedia: (sender,message) => {
