@@ -43,6 +43,7 @@ app.get('/webhook/', (req, res) => {
 })
 // Endpoint webhook
 app.post('/webhook/', (req, res) => {
+  console.log(JSON.stringify(req.body.entry));
   req.body.entry.forEach((entry) =>{
     entry.messaging.forEach((messaging_event)=>{
       fbm.handleMessage(messaging_event)
