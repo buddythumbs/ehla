@@ -20,11 +20,12 @@ app.set('port', (process.env.PORT || 5000))
 app.use(bodyParser.urlencoded({extended: false}))
 // Process application/json
 app.use(bodyParser.json())
-
+// Log all incoming traffic
 let logger = (req,res,next)=>{
   console.log(req);
   next();
 }
+app.use(logger)
 // Index route
 app.get('/', (req, res) => {
     res.render('index', {
