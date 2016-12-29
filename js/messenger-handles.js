@@ -164,7 +164,7 @@ module.exports = {
         case "image":
         console.log('Image');
         if (attachment.payload.sticker_id) {
-          if (ttachment.payload.sticker_id === 369239263222822) {
+          if (attachment.payload.sticker_id === 369239263222822) {
             module.exports.sendTextMessage(sender, "beep boop 💻")
           }
         }
