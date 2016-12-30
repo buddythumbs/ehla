@@ -257,6 +257,7 @@ module.exports = {
       },(error, response, body) => {
           if (!error && response.statusCode == 200) {
             resolve(response.statusCode)
+            module.exports.typingOff()
           } else {
             reject(error || response.body.error)
           }
@@ -349,6 +350,14 @@ module.exports = {
       	"id":sender
       },
       "sender_action":"mark_seen"
+    });
+  },
+  typingOff : (sender) => {
+    module.exports.postMessage({
+        "recipient":{
+      	"id":sender
+      },
+      "sender_action":"typing_off"
     });
   }
 };
