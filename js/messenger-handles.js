@@ -50,13 +50,7 @@ module.exports = {
               console.error("Failed!", error);
             })
           }else if (text.match(/hey|hello|hi/i)){
-            "recipient":{
-                "id":"USER_ID"
-              },
-              "message":{
-                "text":"How can I help?:",
-
-              }
+            
             module.exports.postMessage({
                 "recipient": {
                   "id":sender
