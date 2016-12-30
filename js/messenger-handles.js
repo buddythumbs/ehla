@@ -2,30 +2,12 @@
 
 const request = require('request');
 const weather = require('./weather');
+const sns = require('./sonos');
 
 const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
+const msgUrl = "https://graph.facebook.com/v2.6/me/messages"
 
 module.exports = {
-  sendTextMessage : (sender, text) => {
-      let messageData = { text:text }
-      let json = {
-          recipient: {id:sender},
-          message: messageData,
-      }
-      console.log(json);
-      request({
-          url: 'https://graph.facebook.com/v2.6/me/messages',
-          qs: {access_token:token},
-          method: 'POST',
-          json: json,
-      }, function(error, response, body) {
-          if (error) {
-              console.log('Error sending messages: ', error)
-          } else if (response.body.error) {
-              console.log('Error: ', response.body.error)
-          }
-      })
-  },
   sendGenericMessage : (sender) => {
     let messageData = {
           "attachment": {
@@ -60,7 +42,7 @@ module.exports = {
         }
     },
   handleMessage : (messaging_event) => {
-    console.log(JSON.stringify(messaging_event,null,2));
+    // console.log(JSON.stringify(messaging_event,null,2));
     let event = messaging_event
     let sender = event.sender.id
     module.exports.getUser(sender).then((user)=>{
@@ -82,86 +64,84 @@ module.exports = {
                       }
                   }
               }
-              request({
-                  url: 'https://graph.facebook.com/v2.6/me/messages',
-                  qs: {access_token:token},
-                  method: 'POST',
-                  json: {
-                      recipient: {id:sender},
-                      message: messageData,
-                  }
-              }, function(error, response, body) {
-                  if (error) {
-                      console.log('Error sending messages: ', error)
-                  } else if (response.body.error) {
-                      console.log('Error: ', response.body.error)
-                  }
-              })
+              module.exports.postMessage()
               if (response.main.temp < 6) {
-                module.exports.sendTextMessage(sender, "Think you need a coat! If I was fancy I would turn on the heating!")
+                module.exports.postMessage({
+                    recipient: {id:sender},
+                    message: {
+                      text:"Think you need a coat! If I was fancy I would turn on the heating!"
+                    }
+                })
               }
             }, function(error) {
               console.error("Failed!", error);
             })
-          }else if (text.match(/fuck/i)) {
-            module.exports.sendTextMessage(sender, "No fuck you " + user.first_name)
           }else if (text.match(/hey|hello|hi/i)){
-            let messageData = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Hello!",
-                            "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
-                            "What can I do for you ? ... beep boop" ,
-                            "image_url": user.profile_pic,
-                        }]
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [{
+                                "title": "Hello!",
+                                "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
+                                "What can I do for you ? ... beep boop" ,
+                                "image_url": user.profile_pic,
+                            }]
+                        }
                     }
                 }
-            }
-            request({
-                url: 'https://graph.facebook.com/v2.6/me/messages',
-                qs: {access_token:token},
-                method: 'POST',
-                json: {
-                    recipient: {id:sender},
-                    message: messageData,
-                }
-            }, function(error, response, body) {
-                if (error) {
-                    console.log('Error sending messages: ', error)
-                } else if (response.body.error) {
-                    console.log('Error: ', response.body.error)
+              })
+          }else if (text.toLowerCase() === "help") {
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                  "text":"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n"
                 }
             })
-            // module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
-          }else if (text.toLowerCase() === "help") {
-            module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           }else if (text.toLowerCase().match(/sonos/)) {
-            let arg = text.replace(/sonos/i,"").trim();
-            var spawn = require("child_process").spawn;
-            var process = spawn('python',["sonos-controller.py", arg]);
-            process.stdout.on('data', (data)=>{
-            });
-            process.stdout.on('end', (data)=>{
-            });
+            sns.handleRequest(text)
           }else if (text.match(/thanks|nice|great/)) {
-            module.exports.sendTextMessage(sender, "beep boop 👍")
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                  "text":"beep boop 👍"
+                }
+            })
           } else {
-            module.exports.sendTextMessage(sender, "bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                  "text":"bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩"
+                }
+            })
           }
         }else{
           module.exports.handleMedia(sender,user,event);
         }
-      }
-      if (event.postback) {
-        let text = JSON.stringify(event.postback)
-        module.exports.sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+      }else if (event.postback) {
+        module.exports.postMessage({
+            "recipient": {
+              "id":sender
+            },
+            "message": {
+              "text": "Postback received: " + JSON.stringify(event.postback).substring(0, 200), token
+            }
+        })
       }
     }, function(error, response, body) {
         if (error) {
-            console.log('Error sending messages: ', error)
+            console.log('Error getting user: ', error)
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
@@ -179,7 +159,7 @@ module.exports = {
     })
   },
   handleMedia: (sender,user,event) => {
-    console.log(event);
+    // console.log(event);
     let mediaType = event.message.attachments.forEach((attachment)=>{
       switch (attachment.type) {
         case "audio":
@@ -192,7 +172,14 @@ module.exports = {
         console.log('Image');
         if (attachment.payload.sticker_id) {
           if (attachment.payload.sticker_id === 369239263222822) {
-            module.exports.sendTextMessage(sender, "beep boop 👍")
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                    "text":"beep boop 👍"
+                }
+              })
           }
         }
           break;
@@ -200,5 +187,92 @@ module.exports = {
 
       }
     })
+  },
+  sendVideo : (sender,videoUrl) =>{
+    let messageData = {
+        "attachment": {
+            "type": "video",
+            "payload": {
+                "url": videoUrl,
+            }
+        }
+    }
+    module.exports.postMessage({
+          "recipient": {
+            "id":sender
+          },
+          "message": messageData,
+    }).then(()=>{
+      console.log("Message posted back");
+    })
+  },
+  sendImg : (sender,imgUrl) =>{
+    let messageData = {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url": imgUrl,
+            }
+        }
+    }
+    module.exports.postMessage({
+          "recipient": {
+            "id":sender
+          },
+          "message": messageData,
+    }).then((result)=>{
+      console.log(result);
+    })
+  },
+  sendAudio : (sender,audioUrl) =>{
+    let messageData = {
+        "attachment": {
+            "type": "audio",
+            "payload": {
+                "url": audioUrl,
+            }
+        }
+    }
+    module.exports.postMessage({
+          "recipient": {
+            "id":sender
+          },
+          "message": messageData,
+    }).then((result)=>{
+      console.log(result);
+    })
+  },
+  sendFile : (sender,fileUrl) =>{
+    module.exports.postMessage({
+          "recipient": {
+            "id":sender
+          },
+          "message": {
+              "attachment": {
+                  "type": "file",
+                  "payload": {
+                      "url": fileUrl,
+                  }
+              }
+          },
+    }).then(()=>{
+      console.log("Message posted back");
+    })
+  },
+  postMessage : (json)=>{
+    return new Promise((resolve, reject) => {
+      request({
+        url: msgUrl,
+        qs: {access_token:token},
+        method: 'POST',
+        json: json
+      },(error, response, body) => {
+          if (!error && response.statusCode == 200) {
+            resolve(response.statusCode)
+          } else {
+            reject(error || response.body.error)
+          }
+        })
+      })
   },
 };
