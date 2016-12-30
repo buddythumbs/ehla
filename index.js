@@ -45,7 +45,7 @@ app.get('/webhook/', (req, res) => {
 app.post('/webhook/', (req, res) => {
   req.body.entry.forEach((entry) =>{
     entry.messaging.forEach((messaging_event)=>{
-      console.log("event ",JSON.stringify(req.body.entry,null,2));
+      console.log("event ",JSON.stringify(messaging_event,null,2));
       fbm.handleMessage(messaging_event)
     })
   })
