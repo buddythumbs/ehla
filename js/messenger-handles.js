@@ -337,7 +337,7 @@ module.exports = {
 
     }
   }
-  seen (sender) => {
+  seen : (sender) => {
     module.exports.postMessage({
         "recipient":{
       	"id":sender
@@ -345,7 +345,7 @@ module.exports = {
       "sender_action":"typing_on"
     });
   },
-  typing (sender) => {
+  typing : (sender) => {
     odule.exports.postMessage({
         "recipient":{
       	"id":sender
