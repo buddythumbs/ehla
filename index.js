@@ -22,9 +22,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 // Log all incoming traffic
 let logger = (req,res,next) => {
-  if (req.body.) {
-
-  }
   console.log(JSON.stringify(req.body,null,2));
   next();
 }
