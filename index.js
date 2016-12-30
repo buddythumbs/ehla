@@ -58,6 +58,13 @@ app.post('/sonos/',(req,res) => {
   var process = spawn('python',["sonos-controller.py", arg]);
   res.sendStatus(200)
 })
+// Callback from spotify
+app.post('/spotify/callback/',(req,res) => {
+  res.render('index', {
+    'title':'Spotify Logged in',
+  })
+  res.sendStatus(200)
+})
 // Spin up the server
 app.listen(app.get('port'), () => {
     console.log('running on port', app.get('port'))

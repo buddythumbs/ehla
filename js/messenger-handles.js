@@ -106,6 +106,34 @@ module.exports = {
           }else if (text.match(/fuck/i)) {
             module.exports.sendTextMessage(sender, "No fuck you " + user.first_name)
           }else if (text.match(/hey|hello|hi/i)){
+            let messageData = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Hello!",
+                            "subtitle": "Hey " + user.first_name + "! damn you " (user.gener == "male"? "handsome!":"gorgeous!") ,
+                            "image_url": user.profile_pic,
+                        }]
+                    }
+                }
+            }?
+            request({
+                url: 'https://graph.facebook.com/v2.6/me/messages',
+                qs: {access_token:token},
+                method: 'POST',
+                json: {
+                    recipient: {id:sender},
+                    message: messageData,
+                }
+            }, function(error, response, body) {
+                if (error) {
+                    console.log('Error sending messages: ', error)
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error)
+                }
+            })
             module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
           }else if (text.toLowerCase() === "help") {
             module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
@@ -113,12 +141,9 @@ module.exports = {
             let arg = text.replace(/sonos/i,"").trim();
             var spawn = require("child_process").spawn;
             var process = spawn('python',["sonos-controller.py", arg]);
-            console.log("Spawned python");
             process.stdout.on('data', (data)=>{
-              console.log(data.toString())
             });
             process.stdout.on('end', (data)=>{
-              console.log(data.toString())
             });
           }else if (text.match(/thanks|nice|great/)) {
             module.exports.sendTextMessage(sender, "beep boop 👍")
@@ -126,7 +151,6 @@ module.exports = {
             module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }
         }else{
-          console.log("Handling mediaType");
           module.exports.handleMedia(sender,user,event);
         }
       }
@@ -144,7 +168,7 @@ module.exports = {
   },
   getUser : (id,text) => {
     return new Promise((resolve, reject) => {
-      request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name&access_token=' + token, (error, response, body) => {
+      request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token, (error, response, body) => {
         if (!error && response.statusCode == 200) {
           resolve(JSON.parse(body))
         } else {
