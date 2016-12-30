@@ -14,66 +14,39 @@ module.exports = {
     let sender = event.sender.id
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
-        if (event.message && event.message.text) {
+        if (event.message.quick_reply) {
+          module.exports.handleQuickReply(event)
+        }else if (event.message && event.message.text) {
           let text = event.message.text
-          if (text.match(/weather|conditions|forecast|outside/i)) {
-            weather.getWeather().then((response) => {
-              module.exports.postMessage({
-                  "recipient": {
-                    "id":sender
-                  },
-                  "message": {
-                      "attachment": {
-                          "type": "template",
-                          "payload": {
-                              "template_type": "generic",
-                              "elements": [{
-                                  "title": response.name,
-                                  "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                                  "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                              }]
-                          }
-                      }
-                  }
-              })
-              if (response.main.temp < 6) {
-                module.exports.postMessage({
-                    "recipient": {
-                      "id":sender
-                    },
-                    "message": {
-                      "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-                    }
-                })
-              }
-            }, function(error) {
-              console.error("Failed!", error);
-            })
-          }else if (text.match(/hey|hello|hi/i)){
-            
+          if (text.match(/hey|hello|hi/i)){
             module.exports.postMessage({
                 "recipient": {
                   "id":sender
                 },
                 "message": {
-                  "text":"Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
+                  "text":"Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!😍":"gorgeous! 😍") +
                   "\nWhat can I do for you ? ... beep boop",
                   "quick_replies":[
                     {
                       "content_type":"text",
                       "title":"Weather",
-                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
+                      "payload":"query-weather"
                     },
                     {
                       "content_type":"text",
                       "title":"Sonos",
-                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
+                      "payload":"sonos-player"
                     },
                     {
                       "content_type":"text",
                       "title":"Heating",
-                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
-                    }
+                      "payload":"heating-manager"
+                    },
+                    {
+                      "content_type":"text",
+                      "title":"Random Fact",
+                      "payload":"query-wiki"
+                    },
                   ]
                 }
               })
@@ -256,4 +229,82 @@ module.exports = {
         })
       })
   },
+  handleQuickReply : (event) =>{
+    switch (event.message.text.toLowerCase()) {
+      case "weather":
+      module.exports.postMessage({
+          "recipient": {
+            "id":sender
+          },
+          "message": {
+            "text":"Where do you want the weather for?",
+            "quick_replies":[
+              {
+                "content_type":"text",
+                "title":"Home",
+                "payload":"home-weather"
+              },
+              {
+                "content_type":"location",
+                "title":"My Location",
+                "payload":"locale-weather"
+              }
+            ]
+          }
+        })
+        break;
+      case "sonos":
+
+        break;
+      case "heating":
+
+        break;
+      case "random fact":
+
+        break;
+      case "home":
+
+        break;
+      case "my location":
+
+        break;
+      default:
+
+    }
+    if (text.match(/weather|conditions|forecast|outside/i)) {
+      weather.getWeather().then((response) => {
+        module.exports.postMessage({
+            "recipient": {
+              "id":sender
+            },
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": response.name,
+                            "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                            "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                        }]
+                    }
+                }
+            }
+        })
+        if (response.main.temp < 6) {
+          module.exports.postMessage({
+              "recipient": {
+                "id":sender
+              },
+              "message": {
+                "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+              }
+          })
+        }
+      }, function(error) {
+        console.error("Failed!", error);
+      })
+    }
+  }
+
 };

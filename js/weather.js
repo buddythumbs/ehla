@@ -9,7 +9,11 @@ const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJ
 const wUrl = 'http://api.openweathermap.org/data/2.5/weather?q='+location +'&units=metric&APPID=' + weatherAPI
 
 module.exports = {
-  getWeather : () => {
+  getWeather : (location) => {
+    if (location) {
+      wUrl = 'http://api.openweathermap.org/data/2.5/weather?lat='+
+      parseInt(location.lat) +'&lon='+ parseInt(location.lon) + '&units=metric&APPID=' + weatherAPI
+    }
     return new Promise((resolve, reject) => {
       request(wUrl,(error, response, body) => {
         if (!error && response.statusCode == 200) {
