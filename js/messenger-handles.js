@@ -113,7 +113,8 @@ module.exports = {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Hello!",
-                            "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gener == "male"? "handsome!":"gorgeous!") ,
+                            "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
+                            "What can I do for you ? ... beep boop" ,
                             "image_url": user.profile_pic,
                         }]
                     }
@@ -148,7 +149,7 @@ module.exports = {
           }else if (text.match(/thanks|nice|great/)) {
             module.exports.sendTextMessage(sender, "beep boop 👍")
           } else {
-            module.exports.sendTextMessage(sender, "Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
+            module.exports.sendTextMessage(sender, "bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
           }
         }else{
           module.exports.handleMedia(sender,user,event);
