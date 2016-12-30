@@ -333,7 +333,7 @@ module.exports = {
         break;
       default:
 
-    },
+    }
   }
 
 };
