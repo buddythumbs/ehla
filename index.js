@@ -22,11 +22,14 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 // Log all incoming traffic
 let logger = (req,res,next) => {
+  if (req.body.) {
+
+  }
   console.log(JSON.stringify(req.body,null,2));
   next();
 }
 // add middleware
-app.use(logger)
+// app.use(logger)
 // Index route
 app.get('/', (req, res) => {
     res.render('index', {
@@ -45,7 +48,7 @@ app.get('/webhook/', (req, res) => {
 app.post('/webhook/', (req, res) => {
   req.body.entry.forEach((entry) =>{
     entry.messaging.forEach((messaging_event)=>{
-      console.log("event ",JSON.stringify(messaging_event,null,2));
+      console.log("Messaging Event ",JSON.stringify(messaging_event,null,2));
       fbm.handleMessage(messaging_event)
     })
   })
