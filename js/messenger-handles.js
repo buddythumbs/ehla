@@ -120,7 +120,39 @@ module.exports = {
         console.log('Audio');
           break;
         case "location":
-        console.log('Location');
+          weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
+          .then((response) => {
+          module.exports.postMessage({
+              "recipient": {
+                "id":sender
+              },
+              "message": {
+                  "attachment": {
+                      "type": "template",
+                      "payload": {
+                          "template_type": "generic",
+                          "elements": [{
+                              "title": response.name,
+                              "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                              "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                          }]
+                      }
+                  }
+              }
+          })
+          if (response.main.temp < 6) {
+              module.exports.postMessage({
+                  "recipient": {
+                    "id":sender
+                  },
+                  "message": {
+                    "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+                  }
+              })
+            }
+          }, function(error) {
+            console.error("Failed!", error);
+          })
           break;
         case "image":
         console.log('Image');
@@ -257,12 +289,6 @@ module.exports = {
       case "sonos":
 
         break;
-      case "heating":
-
-        break;
-      case "random fact":
-
-        break;
       case "home":
         weather.getWeather().then((response) => {
         module.exports.postMessage({
@@ -297,41 +323,11 @@ module.exports = {
           console.error("Failed!", error);
         })
         break;
-      case "my location":
-        console.log(event.messaging[0].message.attachments.payload);
-        weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
-        .then((response) => {
-        module.exports.postMessage({
-            "recipient": {
-              "id":sender
-            },
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": response.name,
-                            "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                            "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                        }]
-                    }
-                }
-            }
-        })
-        if (response.main.temp < 6) {
-            module.exports.postMessage({
-                "recipient": {
-                  "id":sender
-                },
-                "message": {
-                  "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-                }
-            })
-          }
-        }, function(error) {
-          console.error("Failed!", error);
-        })
+      case "heating":
+
+        break;
+      case "random fact":
+
         break;
       default:
 
