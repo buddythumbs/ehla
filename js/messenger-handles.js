@@ -133,17 +133,6 @@ module.exports = {
                           "template_type": "list",
                           "top_element_style": "compact",
                           "elements": [{
-                              "title": "Classic White T-Shirt",
-                              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-                              "subtitle": "100% Cotton, 200% Comfortable",
-                              "default_action": {
-                                  "type": "web_url",
-                                  "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                                  "messenger_extensions": true,
-                                  "webview_height_ratio": "tall",
-                                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                              }
-                            },{
                               "title": "Weather in " + response.name,
                               "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
                               "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
@@ -308,17 +297,18 @@ module.exports = {
               "id":sender
             },
             "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": response.name,
-                            "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                            "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                        }]
-                    }
-                }
+              "attachment": {
+                  "type": "template",
+                  "payload": {
+                      "template_type": "list",
+                      "top_element_style": "compact",
+                      "elements": [{
+                          "title": "Weather in " + response.name,
+                          "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
+                          "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                      }]
+                  }
+              }
             }
         })
         if (response.main.temp < 6) {
