@@ -13,7 +13,7 @@ module.exports = {
     let event = messaging_event
     let sender = event.sender.id
     module.exports.seen(sender)
-    module.expmorts.typing(sender)
+    module.exports.typing(sender)
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
         if (event.message.quick_reply) {
