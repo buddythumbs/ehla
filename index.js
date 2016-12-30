@@ -47,10 +47,9 @@ app.post('/webhook/', (req, res) => {
     entry.messaging.forEach((messaging_event)=>{
       console.log("event ",JSON.stringify(req.body.entry,null,2));
       fbm.handleMessage(messaging_event)
-      res.sendStatus(200)
     })
   })
-
+  res.sendStatus(200)
 })
 // Sonos route
 app.post('/sonos/',(req,res) => {
