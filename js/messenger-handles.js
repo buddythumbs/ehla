@@ -230,6 +230,7 @@ module.exports = {
       })
   },
   handleQuickReply : (sender,event) =>{
+    console.log(event.message.text.toLowerCase());
     switch (event.message.text.toLowerCase()) {
       case "weather":
       module.exports.postMessage({
