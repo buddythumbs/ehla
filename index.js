@@ -37,9 +37,9 @@ app.get('/', (req, res) => {
 app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] === 'secret-token') {
         res.send(req.query['hub.challenge'])
+        res.sendStatus(200)
     }
     res.send('Error, wrong token')
-    res.sendStatus(200)
 })
 // Endpoint webhook
 app.post('/webhook/', (req, res) => {
@@ -47,9 +47,10 @@ app.post('/webhook/', (req, res) => {
     entry.messaging.forEach((messaging_event)=>{
       console.log("event ",JSON.stringify(req.body.entry,null,2));
       fbm.handleMessage(messaging_event)
+      res.sendStatus(200)
     })
   })
-  res.sendStatus(200)
+
 })
 // Sonos route
 app.post('/sonos/',(req,res) => {
