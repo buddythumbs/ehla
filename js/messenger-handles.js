@@ -257,7 +257,7 @@ module.exports = {
       },(error, response, body) => {
           if (!error && response.statusCode == 200) {
             resolve(response.statusCode)
-            module.exports.typingOff()
+            module.exports.typingOff(sender)
           } else {
             reject(error || response.body.error)
           }
