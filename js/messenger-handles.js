@@ -346,7 +346,7 @@ module.exports = {
     });
   },
   typing : (sender) => {
-    odule.exports.postMessage({
+    module.exports.postMessage({
         "recipient":{
       	"id":sender
       },
