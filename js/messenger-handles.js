@@ -263,15 +263,6 @@ module.exports = {
 
         break;
       case "home":
-
-        break;
-      case "my location":
-
-        break;
-      default:
-
-    }
-    if (text.match(/weather|conditions|forecast|outside/i)) {
       weather.getWeather().then((response) => {
         module.exports.postMessage({
             "recipient": {
@@ -292,19 +283,57 @@ module.exports = {
             }
         })
         if (response.main.temp < 6) {
-          module.exports.postMessage({
-              "recipient": {
-                "id":sender
-              },
-              "message": {
-                "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-              }
-          })
-        }
-      }, function(error) {
-        console.error("Failed!", error);
-      })
-    }
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                  "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+                }
+            })
+          }
+        }, function(error) {
+          console.error("Failed!", error);
+        })
+        break;
+      case "my location":
+      weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
+      .then((response) => {
+        module.exports.postMessage({
+            "recipient": {
+              "id":sender
+            },
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": response.name,
+                            "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                            "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                        }]
+                    }
+                }
+            }
+        })
+        if (response.main.temp < 6) {
+            module.exports.postMessage({
+                "recipient": {
+                  "id":sender
+                },
+                "message": {
+                  "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+                }
+            })
+          }
+        }, function(error) {
+          console.error("Failed!", error);
+        })
+        break;
+      default:
+
+    },
   }
 
 };
