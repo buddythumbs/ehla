@@ -51,25 +51,31 @@ module.exports = {
           let text = event.message.text
           if (text.match(/weather|conditions|forecast|outside/i)) {
             weather.getWeather().then((response) => {
-              let messageData = {
-                  "attachment": {
-                      "type": "template",
-                      "payload": {
-                          "template_type": "generic",
-                          "elements": [{
-                              "title": response.name,
-                              "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                              "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                          }]
-                      }
+              module.exports.postMessage({
+                  "recipient": {
+                    "id":sender
+                  },
+                  "message": {
+                    "text":"Think you need a coat! If I was fancy I would turn on the heating!"
                   }
-              }
-              module.exports.postMessage()
+              })
               if (response.main.temp < 6) {
                 module.exports.postMessage({
-                    recipient: {id:sender},
-                    message: {
-                      text:"Think you need a coat! If I was fancy I would turn on the heating!"
+                    "recipient": {
+                      "id":sender
+                    },
+                    "message": {
+                        "attachment": {
+                            "type": "template",
+                            "payload": {
+                                "template_type": "generic",
+                                "elements": [{
+                                    "title": response.name,
+                                    "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                                    "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                                }]
+                            }
+                        }
                     }
                 })
               }
