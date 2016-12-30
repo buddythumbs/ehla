@@ -50,23 +50,37 @@ module.exports = {
               console.error("Failed!", error);
             })
           }else if (text.match(/hey|hello|hi/i)){
+            "recipient":{
+                "id":"USER_ID"
+              },
+              "message":{
+                "text":"How can I help?:",
+
+              }
             module.exports.postMessage({
                 "recipient": {
                   "id":sender
                 },
                 "message": {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [{
-                                "title": "Hello!",
-                                "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
-                                "What can I do for you ? ... beep boop" ,
-                                "image_url": user.profile_pic,
-                            }]
-                        }
+                  "text":"Hey " + user.first_name + "! damn you "+ (user.gender == "male"? "handsome!":"gorgeous!") +
+                  "\nWhat can I do for you ? ... beep boop",
+                  "quick_replies":[
+                    {
+                      "content_type":"text",
+                      "title":"Weather",
+                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
+                    },
+                    {
+                      "content_type":"text",
+                      "title":"Sonos",
+                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
+                    },
+                    {
+                      "content_type":"text",
+                      "title":"Heating",
+                      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
                     }
+                  ]
                 }
               })
           }else if (text.toLowerCase() === "help") {
