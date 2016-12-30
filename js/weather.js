@@ -13,7 +13,8 @@ module.exports = {
     console.log(location);
     if (location) {
       wUrl = 'http://api.openweathermap.org/data/2.5/weather?lat='+
-      parseInt(location.lat) +'&lon='+ parseInt(location.long) + '&units=metric&APPID=' + weatherAPI
+      location.lat +'&lon='+location.long + '&units=metric&APPID=' + weatherAPI
+      console.log(wUrl);
     }
     return new Promise((resolve, reject) => {
       request(wUrl,(error, response, body) => {
