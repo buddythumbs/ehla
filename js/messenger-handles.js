@@ -118,7 +118,7 @@ module.exports = {
                         }]
                     }
                 }
-            }?
+            }
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
                 qs: {access_token:token},
@@ -134,7 +134,7 @@ module.exports = {
                     console.log('Error: ', response.body.error)
                 }
             })
-            module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
+            // module.exports.sendTextMessage(sender, "What can I do for you " + user.first_name + "?")
           }else if (text.toLowerCase() === "help") {
             module.exports.sendTextMessage(sender, "Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           }else if (text.toLowerCase().match(/sonos/)) {
