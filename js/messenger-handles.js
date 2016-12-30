@@ -15,7 +15,7 @@ module.exports = {
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
         if (event.message.quick_reply) {
-          module.exports.handleQuickReply(event)
+          module.exports.handleQuickReply(sender,event)
         }else if (event.message && event.message.text) {
           let text = event.message.text
           if (text.match(/hey|hello|hi/i)){
@@ -229,7 +229,7 @@ module.exports = {
         })
       })
   },
-  handleQuickReply : (event) =>{
+  handleQuickReply : (sender,event) =>{
     switch (event.message.text.toLowerCase()) {
       case "weather":
       module.exports.postMessage({
