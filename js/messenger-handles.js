@@ -113,7 +113,7 @@ module.exports = {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Hello!",
-                            "subtitle": "Hey " + user.first_name + "! damn you " (user.gener == "male"? "handsome!":"gorgeous!") ,
+                            "subtitle": "Hey " + user.first_name + "! damn you "+ (user.gener == "male"? "handsome!":"gorgeous!") ,
                             "image_url": user.profile_pic,
                         }]
                     }
