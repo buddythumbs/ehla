@@ -263,7 +263,7 @@ module.exports = {
 
         break;
       case "home":
-      weather.getWeather().then((response) => {
+        weather.getWeather().then((response) => {
         module.exports.postMessage({
             "recipient": {
               "id":sender
@@ -297,8 +297,9 @@ module.exports = {
         })
         break;
       case "my location":
-      weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
-      .then((response) => {
+        console.log(event.messaging[0].message.attachments.payload);
+        weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
+        .then((response) => {
         module.exports.postMessage({
             "recipient": {
               "id":sender
