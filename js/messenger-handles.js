@@ -12,6 +12,8 @@ module.exports = {
     // console.log(JSON.stringify(messaging_event,null,2));
     let event = messaging_event
     let sender = event.sender.id
+    module.exports.seen(sender)
+    module.expmorts.typing(sender)
     module.exports.getUser(sender).then((user)=>{
       if (event.message) {
         if (event.message.quick_reply) {
@@ -130,7 +132,7 @@ module.exports = {
                   "attachment": {
                       "type": "template",
                       "payload": {
-                          "template_type": "list",
+                          "template_type": "generic",
                           "top_element_style": "compact",
                           "elements": [{
                               "title": "Weather in " + response.name,
@@ -300,7 +302,7 @@ module.exports = {
               "attachment": {
                   "type": "template",
                   "payload": {
-                      "template_type": "list",
+                      "template_type": "generic",
                       "top_element_style": "compact",
                       "elements": [{
                           "title": "Weather in " + response.name,
@@ -335,5 +337,20 @@ module.exports = {
 
     }
   }
-
+  seen (sender) => {
+    module.exports.postMessage({
+        "recipient":{
+      	"id":sender
+      },
+      "sender_action":"typing_on"
+    });
+  },
+  typing (sender) => {
+    odule.exports.postMessage({
+        "recipient":{
+      	"id":sender
+      },
+      "sender_action":"mark_seen"
+    });
+  }
 };
