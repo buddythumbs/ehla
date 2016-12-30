@@ -133,7 +133,6 @@ module.exports = {
                       "type": "template",
                       "payload": {
                           "template_type": "generic",
-                          "top_element_style": "compact",
                           "elements": [{
                               "title": "Weather in " + response.name,
                               "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
@@ -303,7 +302,6 @@ module.exports = {
                   "type": "template",
                   "payload": {
                       "template_type": "generic",
-                      "top_element_style": "compact",
                       "elements": [{
                           "title": "Weather in " + response.name,
                           "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
