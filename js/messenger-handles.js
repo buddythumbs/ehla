@@ -120,7 +120,7 @@ module.exports = {
         console.log('Audio');
           break;
         case "location":
-          weather.getWeather(event.messaging[0].message.attachments.payload.coordinates)
+          weather.getWeather(event.message.attachments[0].payload.coordinates)
           .then((response) => {
           module.exports.postMessage({
               "recipient": {
