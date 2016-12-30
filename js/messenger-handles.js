@@ -8,39 +8,6 @@ const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJ
 const msgUrl = "https://graph.facebook.com/v2.6/me/messages"
 
 module.exports = {
-  sendGenericMessage : (sender) => {
-    let messageData = {
-          "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Picture",
-                    "subtitle": "First pic",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "web url"
-                    }, {
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for first element in a generic bubble",
-                    }],
-                }, {
-                    "title": "Second card",
-                    "subtitle": "Element #2 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for second element in a generic bubble",
-                    }],
-                }]
-            }
-          }
-        }
-    },
   handleMessage : (messaging_event) => {
     // console.log(JSON.stringify(messaging_event,null,2));
     let event = messaging_event
@@ -56,7 +23,17 @@ module.exports = {
                     "id":sender
                   },
                   "message": {
-                    "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+                      "attachment": {
+                          "type": "template",
+                          "payload": {
+                              "template_type": "generic",
+                              "elements": [{
+                                  "title": response.name,
+                                  "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                                  "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+                              }]
+                          }
+                      }
                   }
               })
               if (response.main.temp < 6) {
@@ -65,17 +42,7 @@ module.exports = {
                       "id":sender
                     },
                     "message": {
-                        "attachment": {
-                            "type": "template",
-                            "payload": {
-                                "template_type": "generic",
-                                "elements": [{
-                                    "title": response.name,
-                                    "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
-                                    "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                                }]
-                            }
-                        }
+                      "text":"Think you need a coat! If I was fancy I would turn on the heating!"
                     }
                 })
               }
