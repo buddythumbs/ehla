@@ -336,7 +336,7 @@ module.exports = {
       default:
 
     }
-  }
+  },
   seen : (sender) => {
     module.exports.postMessage({
         "recipient":{
