@@ -130,10 +130,22 @@ module.exports = {
                   "attachment": {
                       "type": "template",
                       "payload": {
-                          "template_type": "generic",
+                          "template_type": "list",
+                          "top_element_style": "compact",
                           "elements": [{
-                              "title": response.name,
-                              "subtitle": response.weather[0].description + " - " + response.main.temp + " c",
+                              "title": "Classic White T-Shirt",
+                              "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                              "subtitle": "100% Cotton, 200% Comfortable",
+                              "default_action": {
+                                  "type": "web_url",
+                                  "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                                  "messenger_extensions": true,
+                                  "webview_height_ratio": "tall",
+                                  "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                              }
+                            },{
+                              "title": "Weather in " + response.name,
+                              "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
                               "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
                           }]
                       }
