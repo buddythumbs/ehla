@@ -37,7 +37,7 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
       console.log("Quick replies :",message)
     }else if (atts.sender_action) {
-      opt.form.sender_action = atts.sender_action
+      opts.form.sender_action = atts.sender_action
       console.log("Sender Action:",message)
     } else {
       opts.form.message = {
