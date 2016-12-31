@@ -4,6 +4,25 @@ const request = require('request');
 const weather = require('./weather');
 const sns = require('./sonos');
 
+const welcome = [{
+      "content_type":"text",
+      "title":"Weather",
+      "payload":"query-weather"
+    },{
+      "content_type":"text",
+      "title":"Sonos",
+      "payload":"sonos-player"
+    },{
+      "content_type":"text",
+      "title":"Heating",
+      "payload":"heating-manager"
+    },{
+      "content_type":"text",
+      "title":"Random Fact",
+      "payload":"query-wiki"
+    }]
+
+
 var logIt = (object) =>{
   if (typeof object === 'object') {
     console.log(JSON.stringify(object,null,2));
@@ -35,17 +54,16 @@ var newMessage = (recipientId, msg, atts, cb)=> {
 	}
   //  Handle attachments in variety of forms
   if (atts) {
-    logIt({"ATTS ":atts})
-    if (atts.quick_replies) {
+    if (atts.quick_replies) { // If it's a quick reply
       opts.form.message = {
         text: msg,
         quick_replies : atts.quick_replies.quick_replies,
       }
       logIt({"Quick replies":opts.form.message})
-    }else if (atts.sender_action) {
+    }else if (atts.sender_action) { // Else if it's sender action
       opts.form.sender_action = atts.sender_action
       logIt({"Sender Action":opts})
-    } else {
+    } else { // ELse it's just a normal attachment
       opts.form.message = {
         attachment: {
           "type": atts,
@@ -97,26 +115,7 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
-          let quickReplies = {
-            "quick_replies":[{
-                "content_type":"text",
-                "title":"Weather",
-                "payload":"query-weather"
-              },{
-                "content_type":"text",
-                "title":"Sonos",
-                "payload":"sonos-player"
-              },{
-                "content_type":"text",
-                "title":"Heating",
-                "payload":"heating-manager"
-              },{
-                "content_type":"text",
-                "title":"Random Fact",
-                "payload":"query-wiki"
-              }]
-            }
-          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",quickReplies)
+          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
         }else if (text.toLowerCase().match(/sonos/)) {
