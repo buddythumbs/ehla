@@ -163,13 +163,9 @@ var handleMedia = (sender,user,event) => {
       case "location":
         weather.getWeather(event.message.attachments[0].payload.coordinates)
         .then((response) => {
-          let  msg = "The weather in " +
-            response.name +
-            ": "
+          var msg = "The weather in " + response.name + ": "
           newMessage(sender,msg)
-          let msg = response.main.temp +
-            " celsius with " +
-            response.weather[0].description
+          var msg = response.main.temp + " celsius with " + response.weather[0].description
           newMessage(sender,msg)
           if (response.main.temp < 6) {
               let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
