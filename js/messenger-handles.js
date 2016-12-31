@@ -293,13 +293,13 @@ var handleQuickReply = (sender,event) =>{
 }
 
 var seen = (sender) => {
-  let atts = {"sender_action":"typing_on"}
+  let atts = {"sender_action":"mark_seen"}
   let msg = ""
   newMessage(sender,msg,atts);
 }
 
 var typing = (sender) => {
-  newMessage(sender,"",{"sender_action":"mark_seen"});
+  newMessage(sender,"",{"sender_action":"typing_on"});
 }
 
 var typingOff = (sender) => {
