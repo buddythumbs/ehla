@@ -117,7 +117,7 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
-          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
+          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop")
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
         }else if (text.toLowerCase().match(/sonos/)) {
