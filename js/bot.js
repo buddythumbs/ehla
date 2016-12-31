@@ -1,8 +1,11 @@
 'use strict'
 
-var Config = require('./config')
-var wit = require('./services/wit').getWit()
+const Config = require('./config')
+const wit = require('./services/wit').getWit()
+const uuidV1 = require('uuid/v1');
 
+
+uuidV1();
 // LETS SAVE USER SESSIONS
 var sessions = {}
 
@@ -19,7 +22,7 @@ var findOrCreateSession = function (fbid) {
 
   // No session so we will create one
   if (!sessionId) {
-    sessionId = new Date().toISOString()
+    sessionId = uuidV1()
     sessions[sessionId] = {
       fbid: fbid,
       context: {
