@@ -163,8 +163,8 @@ var handleMedia = (sender,user,event) => {
       case "location":
         weather.getWeather(event.message.attachments[0].payload.coordinates)
         .then((response) => {
-          var msg = "The weather in " + response.name + ": "
-          newMessage(sender,msg)
+          // var msg = "The weather in " + response.name + ": "
+          // newMessage(sender,msg)
           var msg = response.main.temp + " celsius with " + response.weather[0].description
           newMessage(sender,msg)
           if (response.main.temp < 6) {
@@ -174,6 +174,7 @@ var handleMedia = (sender,user,event) => {
         }, function(error) {
           console.error("Failed!", error);
         })
+        newMessage(sender,"Hope that helps .. beepboop")
         break;
       case "image":
       console.log('Image');
