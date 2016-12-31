@@ -1,7 +1,7 @@
 'use strict'
 
 const request = require('request');
-const fbm = require('./messenger-handles');
+const FB = require('./messenger-handles');
 
 const weatherAPI = '8ba0a17ada98c62ad89a2f76f571960d'
 const location = 'Maynooth,ie'
@@ -19,6 +19,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       request(wUrl,(error, response, body) => {
         if (!error && response.statusCode == 200) {
+          FB.logit({"WEATHER":body})
           resolve(JSON.parse(body))
         } else {
           reject(error || response.body.error)
