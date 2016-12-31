@@ -119,8 +119,8 @@ var handleMessage = (messaging_event) => {
                 "content_type":"text",
                 "title":"Random Fact",
                 "payload":"query-wiki"
-              },
-            ]}
+              }]
+            }
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",quickReplies)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
