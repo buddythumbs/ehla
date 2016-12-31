@@ -19,8 +19,6 @@ var newRequest = request.defaults({
 		'Content-Type': 'application/json'
 	},
 })
-
-
 // SETUP A MESSAGE FOR THE FACEBOOK REQUEST
 var newMessage = function (recipientId, msg, atts, cb) {
 	var opts = {
@@ -39,10 +37,10 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
       console.log("Quick replies :",message)
     }else if (atts.sender_action) {
-      let message = atts
+      opt.form.sender_action = atts.sender_action
       console.log("Sender Action:",message)
     } else {
-      let message = {
+      opts.form.message = {
         attachment: {
           "type": atts,
           "payload": {
@@ -53,12 +51,11 @@ var newMessage = function (recipientId, msg, atts, cb) {
     }
 	} else {
     console.log("Text ",msg);
-		let message = {
+		opts.form.message = {
 			text: msg
 		}
 	}
   console.log("MESSAGE :",message)
-	opts.form.message = message
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
