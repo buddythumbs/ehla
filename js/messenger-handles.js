@@ -39,9 +39,7 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
       console.log("Quick replies :",message)
     }else if (atts.sender_action) {
-      let message = {
-        atts
-      }
+      let message = atts
       console.log("Sender Action:",message)
     } else {
       let message = {
