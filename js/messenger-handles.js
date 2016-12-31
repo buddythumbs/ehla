@@ -82,6 +82,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
 		}
     logIt({"MESSAGE ":opts.form.message})
 	}
+  logIt({"OPTIONS ":opts})
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
