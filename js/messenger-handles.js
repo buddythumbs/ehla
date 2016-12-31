@@ -174,7 +174,6 @@ var handleMedia = (sender,user,event) => {
         }, function(error) {
           console.error("Failed!", error);
         })
-        newMessage(sender,"Hope that helps .. beepboop")
         break;
       case "image":
       console.log('Image');
