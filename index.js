@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const path = require('path');
-
+const Config = require('./config')
 const fbm = require('./js/messenger-handles');
 
 // Initiate app
@@ -30,7 +30,7 @@ let logger = (req,res,next) => {
 // Index route
 app.get('/', (req, res) => {
     res.render('index', {
-      'title':'Martin',
+      'title':'Beep boop',
     })
 })
 // for Facebook verification
