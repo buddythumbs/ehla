@@ -37,16 +37,16 @@ var newMessage = function (recipientId, msg, atts, cb) {
 	}
   //  Handle attachments in variety of forms
   if (atts) {
-    // logIt({"ATTS ":atts})
+    logIt({"ATTS ":atts})
     if (atts.quick_replies) {
       let message = {
         text: msg,
         quick_replies : atts,
       }
-      // logIt({"Quick replies":message})
+      logIt({"Quick replies":message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
-      // logIt({"Sender Action":opts})
+      logIt({"Sender Action":opts})
     } else {
       opts.form.message = {
         attachment: {
@@ -56,14 +56,14 @@ var newMessage = function (recipientId, msg, atts, cb) {
           }
         }
       }
-      // logIt({"MESSAGE ":opts.form.message})
+      logIt({"MESSAGE ":opts.form.message})
     }
 	} else {
-    // logIt({"Text":msg});
+    logIt({"Text":msg});
 		opts.form.message = {
 			text: msg
 		}
-    // logIt({"MESSAGE ":opts.form.message})
+    logIt({"MESSAGE ":opts.form.message})
 	}
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
@@ -101,21 +101,18 @@ var handleMessage = (messaging_event) => {
         if (text.match(/hey|hello|hi/i)){
           let quickReplies = {
             "quick_replies":[{
-              "content_type":"text",
-              "title":"Weather",
-              "payload":"query-weather"
-              },
-              {
+                "content_type":"text",
+                "title":"Weather",
+                "payload":"query-weather"
+              },{
                 "content_type":"text",
                 "title":"Sonos",
                 "payload":"sonos-player"
-              },
-              {
+              },{
                 "content_type":"text",
                 "title":"Heating",
                 "payload":"heating-manager"
-              },
-              {
+              },{
                 "content_type":"text",
                 "title":"Random Fact",
                 "payload":"query-wiki"
