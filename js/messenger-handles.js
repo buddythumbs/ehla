@@ -39,9 +39,9 @@ var newMessage = (recipientId, msg, atts, cb)=> {
     if (atts.quick_replies) {
       opts.form.message = {
         text: msg,
-        quick_replies : atts.quick_replies,
+        quick_replies : atts,
       }
-      logIt({"Quick replies":opts})
+      logIt({"Quick replies":opts.form.message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
       logIt({"Sender Action":opts})
@@ -140,9 +140,9 @@ var handleMessage = (messaging_event) => {
 var getUser = (id,text) => {
   return new Promise((resolve, reject) => {
     request('https://graph.facebook.com/v2.6/' +
-    id +
-    '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' +
-    Config.FB_PAGE_TOKEN,
+      id +
+      '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' +
+      Config.FB_PAGE_TOKEN,
      (error, response, body) => {
       if (!error && response.statusCode == 200) {
         resolve(JSON.parse(body))
