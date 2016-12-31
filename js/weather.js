@@ -19,7 +19,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       request(wUrl,(error, response, body) => {
         if (!error && response.statusCode == 200) {
-          FB.logIt({"WEATHER":body})
+          // FB.logIt({"WEATHER":body})
           resolve(JSON.parse(body))
         } else {
           reject(error || response.body.error)
