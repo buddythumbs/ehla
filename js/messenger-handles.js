@@ -36,16 +36,16 @@ var newMessage = function (recipientId, msg, atts, cb) {
 		}
 	}
 	if (atts) {
-    logIt({"ATTS :",atts})
+    logIt({"ATTS ":atts})
     if (atts.quick_replies) {
       let message = {
         text: msg,
         quick_replies : atts,
       }
-      logIt({"Quick replies :",message})
+      logIt({"Quick replies":message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
-      logIt({"Sender Action:",opts})
+      logIt({"Sender Action":opts})
     } else {
       opts.form.message = {
         attachment: {
@@ -57,12 +57,12 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
     }
 	} else {
-    logIt({"Text ",msg});
+    logIt({"Text":msg});
 		opts.form.message = {
 			text: msg
 		}
 	}
-  logIt({"MESSAGE :",message})
+  logIt({"MESSAGE ":message})
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
