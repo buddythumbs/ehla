@@ -36,6 +36,10 @@ var newMessage = function (recipientId, msg, atts, cb) {
         text: msg,
         quick_replies : atts,
       }
+    }else if (atts.sender_action) {
+      let message = {
+        atts
+      }
     }else {
       let message = {
         attachment: {
@@ -377,30 +381,15 @@ var handleQuickReply = (sender,event) =>{
 }
 
 var seen = (sender) => {
-  module.exports.postMessage({
-      "recipient":{
-      "id":sender
-    },
-    "sender_action":"typing_on"
-  });
+  newMessage(sender,"",{"sender_action":"typing_on"});
 }
 
 var typing = (sender) => {
-  module.exports.postMessage({
-      "recipient":{
-         "id":sender
-      },
-      "sender_action":"mark_seen"
-    });
+  newMessage(sender,"",{"sender_action":"mark_seen"});
 }
 
 var typingOff = (sender) => {
-  module.exports.postMessage({
-      "recipient":{
-      "id":sender
-    },
-    "sender_action":"typing_off"
-  });
+  newMessage(sender,"",{"sender_action":"typing_off"});
 }
 
 module.exports = {
