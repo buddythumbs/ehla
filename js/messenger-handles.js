@@ -6,6 +6,13 @@ const sns = require('./sonos');
 
 // const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 // const msgUrl = "https://graph.facebook.com/v2.6/me/messages"
+var logIt = (object) =>{
+  if (tyeof object === 'object') {
+    console.log(JSON.stringify(object,null,2));
+  }else {
+    console.log(object);
+  }
+}
 
 // SETUP A REQUEST TO FACEBOOK SERVER
 var newRequest = request.defaults({
@@ -29,16 +36,16 @@ var newMessage = function (recipientId, msg, atts, cb) {
 		}
 	}
 	if (atts) {
-    console.log("ATTS :",atts)
+    logIt({"ATTS :",atts})
     if (atts.quick_replies) {
       let message = {
         text: msg,
         quick_replies : atts,
       }
-      console.log("Quick replies :",message)
+      logIt({"Quick replies :",message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
-      console.log("Sender Action:",opts)
+      logIt({"Sender Action:",opts})
     } else {
       opts.form.message = {
         attachment: {
@@ -50,12 +57,12 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
     }
 	} else {
-    console.log("Text ",msg);
+    logIt({"Text ",msg});
 		opts.form.message = {
 			text: msg
 		}
 	}
-  console.log("MESSAGE :",message)
+  logIt({"MESSAGE :",message})
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
@@ -377,7 +384,9 @@ var handleQuickReply = (sender,event) =>{
 }
 
 var seen = (sender) => {
-  newMessage(sender,"",{"sender_action":"typing_on"});
+  let atts = {"sender_action":"typing_on"}
+  let msg = ""
+  newMessage(sender,msg,atts);
 }
 
 var typing = (sender) => {
