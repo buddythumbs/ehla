@@ -312,6 +312,5 @@ module.exports = {
   sendImg : sendImg,
   sendAudio : sendAudio,
   sendFile : sendFile,
-  newRequest : newRequest,
   handleQuickReply : handleQuickReply,
 };
