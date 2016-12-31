@@ -110,7 +110,7 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         typing(sender)
         let text = event.message.text
-        if (text.match(/hey|hello|hi/i)){
+        if (text.match(/hey|hello|hi|👋/i)){
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
           typingOff(sender)
         }else if (text.toLowerCase() === "help") {
