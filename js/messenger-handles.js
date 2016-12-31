@@ -41,7 +41,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
         text: msg,
         quick_replies : atts,
       }
-      logIt({"Quick replies":mesopts.form.message})
+      logIt({"Quick replies":opts.form.message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
       logIt({"Sender Action":opts})
