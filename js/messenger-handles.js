@@ -32,40 +32,33 @@ var logIt = (object) =>{
   }
 }
 
-// SETUP A REQUEST TO FACEBOOK SERVER
-var newRequest = request.defaults({
-	uri: 'https://graph.facebook.com/v2.6/me/messages',
-	method: 'POST',
-	json: true,
-	qs: {
-		access_token: Config.FB_PAGE_TOKEN
-	},
-	headers: {
-		'Content-Type': 'application/json'
-	},
-})
 // SETUP A MESSAGE FOR THE FACEBOOK REQUEST
 var newMessage = (recipientId, msg, atts, cb)=> {
-	var opts = {
-		form: {
-			recipient: {
-				id: recipientId
-			},
-		}
-	}
+  var opts = {
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+          access_token:Config.FB_PAGE_TOKEN
+        },
+        method: 'POST',
+        json: {
+    			recipient: {
+    				id: recipientId
+    			},
+    		}
+    }
   //  Handle attachments in variety of forms
   if (atts) {
     if (atts.quick_replies) { // If it's a quick reply
-      opts.form.message = {
+      opts.json.message = {
         text: msg,
         quick_replies : atts.quick_replies,
       }
-      logIt({"Quick replies":opts.form.message})
+      logIt({"Quick replies":opts.json.message})
     }else if (atts.sender_action) { // Else if it's sender action
-      opts.form.sender_action = atts.sender_action
+      opts.json.sender_action = atts.sender_action
       logIt({"Sender Action":opts})
     } else { // ELse it's just a normal attachment
-      opts.form.message = {
+      opts.json.message = {
         attachment: {
           "type": atts,
           "payload": {
@@ -73,17 +66,24 @@ var newMessage = (recipientId, msg, atts, cb)=> {
           }
         }
       }
-      logIt({"MESSAGE ":opts.form.message})
+      logIt({"MESSAGE ":opts.json.message})
     }
 	} else {
     logIt({"Text":msg});
-		opts.form.message = {
+		opts.json.message = {
 			text: msg
 		}
     logIt({"MESSAGE ":opts.form.message})
 	}
-  logIt({"OPTIONS ":opts})
-	newRequest(opts, function (err, resp, data) {
+  request(opts,(error, response, body) => {
+    if (!error && response.statusCode == 200) {
+      logIt({"Reply":body});
+    } else {
+      logIt({"Error":error || response.body.error});
+    }
+  })
+
+  newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
 		}
