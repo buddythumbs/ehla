@@ -82,12 +82,6 @@ var newMessage = (recipientId, msg, atts, cb)=> {
       logIt({"Error":error || response.body.error});
     }
   })
-
-  newRequest(opts, function (err, resp, data) {
-		if (cb) {
-			cb(err || data.error && data.error.message, data)
-		}
-	})
 }
 // PARSE A FACEBOOK MESSAGE to get user, message body, or attachment
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
