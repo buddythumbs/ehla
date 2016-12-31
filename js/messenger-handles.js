@@ -160,43 +160,24 @@ var handleMedia = (sender,user,event) => {
       case "audio":
       console.log('Audio');
         break;
-      // case "location":
-      //   weather.getWeather(event.message.attachments[0].payload.coordinates)
-      //   .then((response) => {
-      //     let  msg = ""
-      //     let atts =
-      //     newMessage({
-      //       "recipient": {
-      //         "id":sender
-      //       },
-      //       "message": {
-      //           "attachment": {
-      //               "type": "template",
-      //               "payload": {
-      //                   "template_type": "generic",
-      //                   "elements": [{
-      //                       "title": "Weather in " + response.name,
-      //                       "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
-      //                       "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-      //                   }]
-      //               }
-      //           }
-      //       }
-      //   })
-      //   if (response.main.temp < 6) {
-      //       module.exports.postMessage({
-      //           "recipient": {
-      //             "id":sender
-      //           },
-      //           "message": {
-      //             "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-      //           }
-      //       })
-      //     }
-      //   }, function(error) {
-      //     console.error("Failed!", error);
-      //   })
-      //   break;
+      case "location":
+        weather.getWeather(event.message.attachments[0].payload.coordinates)
+        .then((response) => {
+          let  msg = "Weather in " +
+            response.name +
+            response.weather[0].description +
+            " - " +
+            response.main.temp +
+            " celsius"
+
+          newMessage(sender,msg)
+        if (response.main.temp < 6) {
+            let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
+            newMessage(sender,msg)
+        }, function(error) {
+          console.error("Failed!", error);
+        })
+        break;
       case "image":
       console.log('Image');
       if (attachment.payload.sticker_id) {
