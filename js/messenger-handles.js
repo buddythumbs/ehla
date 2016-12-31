@@ -35,7 +35,8 @@ var newMessage = function (recipientId, msg, atts, cb) {
 			},
 		}
 	}
-	if (atts) {
+  //  Handle attachments in variety of forms
+  if (atts) {
     logIt({"ATTS ":atts})
     if (atts.quick_replies) {
       let message = {
@@ -61,8 +62,8 @@ var newMessage = function (recipientId, msg, atts, cb) {
 		opts.form.message = {
 			text: msg
 		}
+    logIt({"MESSAGE ":message})
 	}
-  logIt({"MESSAGE ":message})
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
 			cb(err || data.error && data.error.message, data)
