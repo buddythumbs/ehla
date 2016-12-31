@@ -171,9 +171,10 @@ var handleMedia = (sender,user,event) => {
             " celsius"
 
           newMessage(sender,msg)
-        if (response.main.temp < 6) {
-            let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
-            newMessage(sender,msg)
+          if (response.main.temp < 6) {
+              let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
+              newMessage(sender,msg)
+          }
         }, function(error) {
           console.error("Failed!", error);
         })
