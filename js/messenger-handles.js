@@ -39,7 +39,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
     if (atts.quick_replies) {
       opts.form.message = {
         text: msg,
-        quick_replies : atts,
+        quick_replies : atts.quick_replies.quick_replies,
       }
       logIt({"Quick replies":opts.form.message})
     }else if (atts.sender_action) {
@@ -97,7 +97,8 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
-          let quickReplies = [{
+          let quickReplies = {
+            "quick_replies":[{
                 "content_type":"text",
                 "title":"Weather",
                 "payload":"query-weather"
@@ -114,6 +115,7 @@ var handleMessage = (messaging_event) => {
                 "title":"Random Fact",
                 "payload":"query-wiki"
               }]
+            }
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",quickReplies)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
