@@ -38,7 +38,7 @@ var newMessage = function (recipientId, msg, atts, cb) {
       console.log("Quick replies :",message)
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
-      console.log("Sender Action:",message)
+      console.log("Sender Action:",opts)
     } else {
       opts.form.message = {
         attachment: {
