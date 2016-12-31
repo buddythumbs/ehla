@@ -37,11 +37,13 @@ var newMessage = function (recipientId, msg, atts, cb) {
         text: msg,
         quick_replies : atts,
       }
+      console.log("Quick replies :",message)
     }else if (atts.sender_action) {
       let message = {
         atts
       }
-    }else {
+      console.log("Sender Action:",message)
+    } else {
       let message = {
         attachment: {
           "type": atts,
