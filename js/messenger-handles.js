@@ -73,7 +73,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
 		opts.json.message = {
 			text: msg
 		}
-    logIt({"MESSAGE ":opts.form.message})
+    logIt({"MESSAGE ":opts.json.message})
 	}
   request(opts,(error, response, body) => {
     if (!error && response.statusCode == 200) {
