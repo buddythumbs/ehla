@@ -71,7 +71,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
 }
 // PARSE A FACEBOOK MESSAGE to get user, message body, or attachment
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-var getMessageEntry = body) => {
+var getMessageEntry = (body) => {
 	var val = body.object === 'page' &&
 						body.entry &&
 						Array.isArray(body.entry) &&
