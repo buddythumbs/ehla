@@ -7,7 +7,7 @@ const sns = require('./sonos');
 // const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 // const msgUrl = "https://graph.facebook.com/v2.6/me/messages"
 var logIt = (object) =>{
-  if (tyeof object === 'object') {
+  if (typeof object === 'object') {
     console.log(JSON.stringify(object,null,2));
   }else {
     console.log(object);
