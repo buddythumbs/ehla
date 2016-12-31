@@ -293,4 +293,5 @@ module.exports = {
   sendAudio : sendAudio,
   sendFile : sendFile,
   handleQuickReply : handleQuickReply,
+  logIt : logIt
 };
