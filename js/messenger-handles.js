@@ -37,16 +37,16 @@ var newMessage = function (recipientId, msg, atts, cb) {
 	}
   //  Handle attachments in variety of forms
   if (atts) {
-    logIt({"ATTS ":atts})
+    // logIt({"ATTS ":atts})
     if (atts.quick_replies) {
       let message = {
         text: msg,
         quick_replies : atts,
       }
-      logIt({"Quick replies":message})
+      // logIt({"Quick replies":message})
     }else if (atts.sender_action) {
       opts.form.sender_action = atts.sender_action
-      logIt({"Sender Action":opts})
+      // logIt({"Sender Action":opts})
     } else {
       opts.form.message = {
         attachment: {
@@ -56,13 +56,14 @@ var newMessage = function (recipientId, msg, atts, cb) {
           }
         }
       }
+      // logIt({"MESSAGE ":opts.form.message})
     }
 	} else {
-    logIt({"Text":msg});
+    // logIt({"Text":msg});
 		opts.form.message = {
 			text: msg
 		}
-    logIt({"MESSAGE ":message})
+    // logIt({"MESSAGE ":opts.form.message})
 	}
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
@@ -143,7 +144,10 @@ var handleMessage = (messaging_event) => {
 
 var getUser = (id,text) => {
   return new Promise((resolve, reject) => {
-    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + Config.FB_PAGE_TOKEN,
+    request('https://graph.facebook.com/v2.6/' +
+    id +
+    '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' +
+    Config.FB_PAGE_TOKEN,
      (error, response, body) => {
       if (!error && response.statusCode == 200) {
         resolve(JSON.parse(body))
@@ -161,53 +165,49 @@ var handleMedia = (sender,user,event) => {
       case "audio":
       console.log('Audio');
         break;
-      case "location":
-        weather.getWeather(event.message.attachments[0].payload.coordinates)
-        .then((response) => {
-        module.exports.postMessage({
-            "recipient": {
-              "id":sender
-            },
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Weather in " + response.name,
-                            "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
-                            "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                        }]
-                    }
-                }
-            }
-        })
-        if (response.main.temp < 6) {
-            module.exports.postMessage({
-                "recipient": {
-                  "id":sender
-                },
-                "message": {
-                  "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-                }
-            })
-          }
-        }, function(error) {
-          console.error("Failed!", error);
-        })
-        break;
+      // case "location":
+      //   weather.getWeather(event.message.attachments[0].payload.coordinates)
+      //   .then((response) => {
+      //     let  msg = ""
+      //     let atts =
+      //     newMessage({
+      //       "recipient": {
+      //         "id":sender
+      //       },
+      //       "message": {
+      //           "attachment": {
+      //               "type": "template",
+      //               "payload": {
+      //                   "template_type": "generic",
+      //                   "elements": [{
+      //                       "title": "Weather in " + response.name,
+      //                       "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
+      //                       "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
+      //                   }]
+      //               }
+      //           }
+      //       }
+      //   })
+      //   if (response.main.temp < 6) {
+      //       module.exports.postMessage({
+      //           "recipient": {
+      //             "id":sender
+      //           },
+      //           "message": {
+      //             "text":"Think you need a coat! If I was fancy I would turn on the heating!"
+      //           }
+      //       })
+      //     }
+      //   }, function(error) {
+      //     console.error("Failed!", error);
+      //   })
+      //   break;
       case "image":
       console.log('Image');
       if (attachment.payload.sticker_id) {
         if (attachment.payload.sticker_id === 369239263222822) {
-          module.exports.postMessage({
-              "recipient": {
-                "id":sender
-              },
-              "message": {
-                  "text":"beep boop 👍"
-              }
-            })
+          let msg = "beep boop 👍"
+          newMessage(sender,msg)
         }
       }
         break;
@@ -218,156 +218,66 @@ var handleMedia = (sender,user,event) => {
 }
 
 var sendVideo = (sender,videoUrl) =>{
-  let messageData = {
-      "attachment": {
-          "type": "video",
-          "payload": {
-              "url": videoUrl,
-          }
-      }
-  }
-  module.exports.postMessage({
-        "recipient": {
-          "id":sender
-        },
-        "message": messageData,
-  }).then(()=>{
-    console.log("Message posted back");
-  })
+  let msg = videoUrl
+  let atts = "video"
+  newMessage(sender,msg,atts)
 }
 
 var sendImg = (sender,imgUrl) =>{
-  let messageData = {
-      "attachment": {
-          "type": "image",
-          "payload": {
-              "url": imgUrl,
-          }
-      }
-  }
-  module.exports.postMessage({
-        "recipient": {
-          "id":sender
-        },
-        "message": messageData,
-  }).then((result)=>{
-    console.log(result);
-  })
+  let msg = imgUrl
+  let atts = "image"
+  newMessage(sender,msg,atts)
 }
 
 var sendAudio = (sender,audioUrl) =>{
-  let messageData = {
-      "attachment": {
-          "type": "audio",
-          "payload": {
-              "url": audioUrl,
-          }
-      }
-  }
-  module.exports.postMessage({
-        "recipient": {
-          "id":sender
-        },
-        "message": messageData,
-  }).then((result)=>{
-    console.log(result);
-  })
-}
-
-var sendAudio = (sender,audioUrl) =>{
-  let messageData = {
-      "attachment": {
-          "type": "audio",
-          "payload": {
-              "url": audioUrl,
-          }
-      }
-  }
-  module.exports.postMessage({
-        "recipient": {
-          "id":sender
-        },
-        "message": messageData,
-  }).then((result)=>{
-    console.log(result);
-  })
+  let msg = audioUrl
+  let atts = "audio"
+  newMessage(sender,msg,atts)
 }
 
 var sendFile = (sender,fileUrl) =>{
-  module.exports.postMessage({
-        "recipient": {
-          "id":sender
-        },
-        "message": {
-            "attachment": {
-                "type": "file",
-                "payload": {
-                    "url": fileUrl,
-                }
-            }
-        },
-  }).then(()=>{
-    console.log("Message posted back");
-  })
+  let msg = audioUrl
+  let atts = "file"
+  newMessage(sender,msg,atts)
 }
 
 var handleQuickReply = (sender,event) =>{
   console.log(event.message.text.toLowerCase());
   switch (event.message.text.toLowerCase()) {
     case "weather":
-    module.exports.postMessage({
-        "recipient": {
-          "id":sender
+      let msg = "Where do you want the weather for?";
+      let atts = {
+      "quick_replies":[
+        {
+          "content_type":"text",
+          "title":"Home",
+          "payload":"home-weather"
         },
-        "message": {
-          "text":"Where do you want the weather for?",
-          "quick_replies":[
-            {
-              "content_type":"text",
-              "title":"Home",
-              "payload":"home-weather"
-            },
-            {
-              "content_type":"location",
-              "title":"My Location",
-              "payload":"locale-weather"
-            }
-          ]
+        {
+          "content_type":"location",
+          "title":"My Location",
+          "payload":"locale-weather"
         }
-      })
+      ]
+    }
+      newMessage(sender,msg,atts)
       break;
     case "sonos":
 
       break;
     case "home":
       weather.getWeather().then((response) => {
-      newMessage({
-          "recipient": {
-            "id":sender
-          },
-          "message": {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Weather in " + response.name,
-                        "subtitle": response.weather[0].description + " - " + response.main.temp + " celsius",
-                        "image_url": "http://openweathermap.org/img/w/"+ response.weather[0].icon+".png",
-                    }]
-                }
-            }
-          }
-      })
-      if (response.main.temp < 6) {
-          module.exports.postMessage({
-              "recipient": {
-                "id":sender
-              },
-              "message": {
-                "text":"Think you need a coat! If I was fancy I would turn on the heating!"
-              }
-          })
+        let msg = "Weather in " +
+            response.name +
+            ":" +
+            response.weather[0].description +
+            " - " +
+            response.main.temp +
+            " celsius"
+        newMessage(sender,msg)
+        if (response.main.temp < 6) {
+          let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
+          newMessage(sender,msg)
         }
       }, function(error) {
         console.error("Failed!", error);
