@@ -108,14 +108,7 @@ var handleMessage = (messaging_event) => {
         handleMedia(sender,user,event);
       }
     }else if (event.postback) {
-      module.exports.postMessage({
-          "recipient": {
-            "id":sender
-          },
-          "message": {
-            "text": "Postback received: " + JSON.stringify(event.postback).substring(0, 200), token
-          }
-      })
+      newMessage(sender,"Postback received: " + JSON.stringify(event.postback).substring(0, 200))
     }
   }, function(error) {
       console.log('Error getting user: ', error)
@@ -124,7 +117,8 @@ var handleMessage = (messaging_event) => {
 
 var getUser = (id,text) => {
   return new Promise((resolve, reject) => {
-    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token, (error, response, body) => {
+    request('https://graph.facebook.com/v2.6/' + id +'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + Config.FB_PAGE_TOKEN,
+     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         resolve(JSON.parse(body))
       } else {
@@ -291,23 +285,23 @@ var sendFile = (sender,fileUrl) =>{
   })
 }
 
-var postMessage = (json)=>{
-  return new Promise((resolve, reject) => {
-    request({
-      url: msgUrl,
-      qs: {access_token:token},
-      method: 'POST',
-      json: json
-    },(error, response, body) => {
-        if (!error && response.statusCode == 200) {
-          resolve(response.statusCode)
-          module.exports.typingOff(json.recipient.id)
-        } else {
-          reject(error || response.body.error)
-        }
-      })
-    })
-}
+// var postMessage = (json)=>{
+//   return new Promise((resolve, reject) => {
+//     request({
+//       url: msgUrl,
+//       qs: {access_token:Config.FB_PAGE_TOKEN},
+//       method: 'POST',
+//       json: json
+//     },(error, response, body) => {
+//         if (!error && response.statusCode == 200) {
+//           resolve(response.statusCode)
+//           module.exports.typingOff(json.recipient.id)
+//         } else {
+//           reject(error || response.body.error)
+//         }
+//       })
+//     })
+// }
 
 var handleQuickReply = (sender,event) =>{
   console.log(event.message.text.toLowerCase());
@@ -417,7 +411,7 @@ module.exports = {
   sendImg : sendImg,
   sendAudio : sendAudio,
   sendFile : sendFile,
-  postMessage : postMessage,
+  // postMessage : postMessage,
   handleQuickReply : handleQuickReply,
   seen : seen,
   typing : typing,
