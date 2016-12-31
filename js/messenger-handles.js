@@ -4,24 +4,25 @@ const request = require('request');
 const weather = require('./weather');
 const sns = require('./sonos');
 
-const welcome = [{
-      "content_type":"text",
-      "title":"Weather",
-      "payload":"query-weather"
-    },{
-      "content_type":"text",
-      "title":"Sonos",
-      "payload":"sonos-player"
-    },{
-      "content_type":"text",
-      "title":"Heating",
-      "payload":"heating-manager"
-    },{
-      "content_type":"text",
-      "title":"Random Fact",
-      "payload":"query-wiki"
-    }]
-
+const welcome = {
+  "quick_replies":[{
+        "content_type":"text",
+        "title":"Weather",
+        "payload":"query-weather"
+      },{
+        "content_type":"text",
+        "title":"Sonos",
+        "payload":"sonos-player"
+      },{
+        "content_type":"text",
+        "title":"Heating",
+        "payload":"heating-manager"
+      },{
+        "content_type":"text",
+        "title":"Random Fact",
+        "payload":"query-wiki"
+      }]
+}
 
 var logIt = (object) =>{
   if (typeof object === 'object') {
@@ -57,7 +58,7 @@ var newMessage = (recipientId, msg, atts, cb)=> {
     if (atts.quick_replies) { // If it's a quick reply
       opts.form.message = {
         text: msg,
-        quick_replies : atts.quick_replies.quick_replies,
+        quick_replies : atts.quick_replies,
       }
       logIt({"Quick replies":opts.form.message})
     }else if (atts.sender_action) { // Else if it's sender action
