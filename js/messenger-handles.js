@@ -165,7 +165,11 @@ var handleMedia = (sender,user,event) => {
         .then((response) => {
           // var msg = "The weather in " + response.name + ": "
           // newMessage(sender,msg)
-          var msg = response.main.temp + " celsius with " + response.weather[0].description
+          var msg = response.main.temp +
+            " celsius with " +
+            response.weather[0].description + 
+            " in " +
+            response.name
           newMessage(sender,msg)
           if (response.main.temp < 6) {
               let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
