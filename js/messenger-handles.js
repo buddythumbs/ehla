@@ -31,6 +31,7 @@ var newMessage = function (recipientId, msg, atts, cb) {
 		}
 	}
 	if (atts) {
+    console.log("ATTS :",atts)
     if (atts.quick_replies) {
       let message = {
         text: msg,
@@ -51,10 +52,12 @@ var newMessage = function (recipientId, msg, atts, cb) {
       }
     }
 	} else {
+    console.log("Text ",msg);
 		let message = {
 			text: msg
 		}
 	}
+  console.log("MESSAGE :",message)
 	opts.form.message = message
 	newRequest(opts, function (err, resp, data) {
 		if (cb) {
