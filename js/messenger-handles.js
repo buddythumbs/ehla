@@ -130,6 +130,7 @@ var handleMessage = (messaging_event) => {
       }
     }else if (event.postback) {
       newMessage(sender,"Postback received: " + JSON.stringify(event.postback).substring(0, 200))
+      typingOff(sender)
     }
   }, function(error) {
       console.log('Error getting user: ', error)
@@ -255,6 +256,7 @@ var handleQuickReply = (sender,event) =>{
       ]
     }
       newMessage(sender,msg,atts)
+      typingOff(sender)
       break;
     case "sonos":
 
@@ -269,9 +271,11 @@ var handleQuickReply = (sender,event) =>{
             response.main.temp +
             " celsius"
         newMessage(sender,msg)
+        typingOff(sender)
         if (response.main.temp < 6) {
           let msg = "Think you need a coat! If I was fancy I would turn on the heating!"
           newMessage(sender,msg)
+          typingOff(sender)
         }
       }, function(error) {
         console.error("Failed!", error);
