@@ -103,12 +103,12 @@ var handleMessage = (messaging_event) => {
   let event = messaging_event
   let sender = event.sender.id
   seen(sender)
-  typing(sender)
   getUser(sender).then((user)=>{
     if (event.message) {
       if (event.message.quick_reply) {
         handleQuickReply(sender,event)
       }else if (event.message && event.message.text) {
+        typing(sender)
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
