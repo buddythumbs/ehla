@@ -112,14 +112,18 @@ var handleMessage = (messaging_event) => {
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
+          typingOff(sender)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+          typingOff(sender)
         }else if (text.toLowerCase().match(/sonos/)) {
           sns.handleRequest(text)
         }else if (text.match(/thanks|nice|great/)) {
           newMessage(sender,"beep boop 👍")
+          typingOff(sender)
         } else {
           newMessage(sender,"bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
+          typingOff(sender)
         }
       }else{
         handleMedia(sender,user,event);
