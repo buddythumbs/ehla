@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const path = require('path');
 const Config = require('./config')
-const fbm = require('./js/messenger-handles');
+const FB = require('./js/messenger-handles');
 
 // Initiate app
 const app = express()
@@ -46,7 +46,7 @@ app.post('/webhook/', (req, res) => {
   req.body.entry.forEach((entry) =>{
     entry.messaging.forEach((messaging_event)=>{
       console.log("Messaging Event ",JSON.stringify(messaging_event,null,2));
-      fbm.handleMessage(messaging_event)
+      FB.handleMessage(messaging_event)
     })
   })
   res.sendStatus(200)

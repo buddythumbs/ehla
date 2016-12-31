@@ -65,6 +65,20 @@ var newMessage = function (recipientId, msg, atts, cb) {
 		}
 	})
 }
+// PARSE A FACEBOOK MESSAGE to get user, message body, or attachment
+// https://developers.facebook.com/docs/messenger-platform/webhook-reference
+var getMessageEntry = function (body) {
+	var val = body.object === 'page' &&
+						body.entry &&
+						Array.isArray(body.entry) &&
+						body.entry.length > 0 &&
+						body.entry[0] &&
+						body.entry[0].messaging &&
+						Array.isArray(body.entry[0].messaging) &&
+						body.entry[0].messaging.length > 0 &&
+						body.entry[0].messaging[0]
+	return val || null
+}
 
 var handleMessage = (messaging_event) => {
   // console.log(JSON.stringify(messaging_event,null,2));
@@ -292,24 +306,6 @@ var sendFile = (sender,fileUrl) =>{
   })
 }
 
-// var postMessage = (json)=>{
-//   return new Promise((resolve, reject) => {
-//     request({
-//       url: msgUrl,
-//       qs: {access_token:Config.FB_PAGE_TOKEN},
-//       method: 'POST',
-//       json: json
-//     },(error, response, body) => {
-//         if (!error && response.statusCode == 200) {
-//           resolve(response.statusCode)
-//           module.exports.typingOff(json.recipient.id)
-//         } else {
-//           reject(error || response.body.error)
-//         }
-//       })
-//     })
-// }
-
 var handleQuickReply = (sender,event) =>{
   console.log(event.message.text.toLowerCase());
   switch (event.message.text.toLowerCase()) {
@@ -340,7 +336,7 @@ var handleQuickReply = (sender,event) =>{
       break;
     case "home":
       weather.getWeather().then((response) => {
-      module.exports.postMessage({
+      newMessage({
           "recipient": {
             "id":sender
           },
@@ -403,9 +399,6 @@ module.exports = {
   sendImg : sendImg,
   sendAudio : sendAudio,
   sendFile : sendFile,
-  // postMessage : postMessage,
+  newRequest : newRequest,
   handleQuickReply : handleQuickReply,
-  seen : seen,
-  typing : typing,
-  typingOff : typingOff
 };
