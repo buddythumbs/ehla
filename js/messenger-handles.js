@@ -4,8 +4,6 @@ const request = require('request');
 const weather = require('./weather');
 const sns = require('./sonos');
 
-// const token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
-// const msgUrl = "https://graph.facebook.com/v2.6/me/messages"
 var logIt = (object) =>{
   if (typeof object === 'object') {
     console.log(JSON.stringify(object,null,2));
@@ -27,7 +25,7 @@ var newRequest = request.defaults({
 	},
 })
 // SETUP A MESSAGE FOR THE FACEBOOK REQUEST
-var newMessage = function (recipientId, msg, atts, cb) {
+var newMessage = (recipientId, msg, atts, cb)=> {
 	var opts = {
 		form: {
 			recipient: {
@@ -73,7 +71,7 @@ var newMessage = function (recipientId, msg, atts, cb) {
 }
 // PARSE A FACEBOOK MESSAGE to get user, message body, or attachment
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-var getMessageEntry = function (body) {
+var getMessageEntry = body) => {
 	var val = body.object === 'page' &&
 						body.entry &&
 						Array.isArray(body.entry) &&
