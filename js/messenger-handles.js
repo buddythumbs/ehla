@@ -97,8 +97,7 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         let text = event.message.text
         if (text.match(/hey|hello|hi/i)){
-          let quickReplies = {
-            "quick_replies":[{
+          let quickReplies = [{
                 "content_type":"text",
                 "title":"Weather",
                 "payload":"query-weather"
@@ -115,7 +114,6 @@ var handleMessage = (messaging_event) => {
                 "title":"Random Fact",
                 "payload":"query-wiki"
               }]
-            }
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",quickReplies)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
