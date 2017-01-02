@@ -2,7 +2,7 @@
 const Config = require('../config');
 const request = require('request');
 const weather = require('./weather');
-const sns = require('./sonos');
+const sns = require('../routes/sonos');
 
 const welcome = {
   "quick_replies":[{
@@ -119,9 +119,8 @@ var handleMessage = (messaging_event) => {
           let url = 'https://scontent.xx.fbcdn.net/v/t34.0-12/15870941_10207508265653446_564443884_n.gif?_nc_ad=z-m&oh=cb1ff0bece4af4b01ff3c00ae17ef8a5&oe=586CB6DA'
           let atts = 'image'
           sendImg(sender,url)
-          .then(typingOff(sender),(err)=>{})
-          .then(newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
-          ,(err)=>{})
+          .then(typingOff(sender))
+          .then(newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome))
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           typingOff(sender)
@@ -296,6 +295,23 @@ var typingOff = (sender) => {
   newMessage(sender,"",{"sender_action":"typing_off"});
 }
 
+var tokenVerification = (req, res) => {
+    if (req.query['hub.verify_token'] === 'secret-token') {
+        res.send(req.query['hub.challenge'])
+        res.sendStatus(200)
+    }
+    res.send('Error, wrong token')
+}
+
+var incoming = (req, res) => {
+  req.body.entry.forEach((entry) =>{
+    entry.messaging.forEach((messaging_event)=>{
+      handleMessage(messaging_event)
+    })
+  })
+  res.sendStatus(200)
+}
+
 module.exports = {
   handleMessage : handleMessage,
   getUser : getUser,
@@ -306,4 +322,6 @@ module.exports = {
   sendFile : sendFile,
   handleQuickReply : handleQuickReply,
   logIt : logIt,
+  tokenVerification : tokenVerification,
+  incoming : incoming
 };

@@ -2,10 +2,10 @@
   "name": "ehla",
   "version": "1.0.0",
   "description": "Smart home WIP - starting with one SONOS",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node app.js",
     "deploy": "git push heroku master",
     "log": "heroku logs --tail"
   },
