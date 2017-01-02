@@ -52,7 +52,7 @@ app.post('/webhook/', (req, res) => {
   res.sendStatus(200)
 })
 // Sonos route
-app.get('/sonos/',(req,res) => {
+app.get('/sonos/:',(req,res) => {
   let arg = req.body.arg;
   var spawn = require("child_process").spawn;
   var process = spawn('python',["sonos-controller.py", arg]);
