@@ -20,10 +20,14 @@ def next(player):
     player.next()
 
 def main(argv):
-    # Get all devices in zone
-    zone_list = list(soco.discover())
-    # Only 1 system in zone - 'Family Room'
-    FR = zone_list[0]
+    try:
+        # Get all devices in zone
+        zone_list = list(soco.discover())
+        # Only 1 system in zone - 'Family Room'
+        FR = zone_list[0]
+    except Exception as e:
+        print "Something is fucky with the players!"
+
     try:
         opts, args = getopt.getopt(argv,"np",["play","pause","status"])
     except getopt.GetoptError:
