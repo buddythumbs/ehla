@@ -223,24 +223,24 @@ var handleQuickReply = (sender,event) =>{
     case "weather":
       let msg = "Where do you want the weather for?";
       let atts = {
-      "quick_replies":[
-        {
-          "content_type":"text",
-          "title":"Home",
-          "payload":"home-weather"
-        },
-        {
-          "content_type":"location",
-          "title":"My Location",
-          "payload":"locale-weather"
-        }
-      ]
-    }
+        "quick_replies":[
+          {
+            "content_type":"text",
+            "title":"Home",
+            "payload":"home-weather"
+          },
+          {
+            "content_type":"location",
+            "title":"My Location",
+            "payload":"locale-weather"
+          }
+        ]
+      }
       newMessage(sender,msg,atts)
       typingOff(sender)
       break;
     case "sonos":
-
+      sns.handleRequest("--play")
       break;
     case "home":
       weather.getWeather().then((response) => {
