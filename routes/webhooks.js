@@ -1,5 +1,5 @@
 'use strict'
-const FB = require('../js/messenger-handles');
+const FB = require('../controller/messenger-handles');
 
 
 const express = require('express');
