@@ -1,5 +1,5 @@
 'use strict';
-
+const path = require('path');
 // Facebook API
 const WIT_TOKEN = process.env.WIT_TOKEN || '3D7CR3AUUUEQ3FZR5SN4HO4KULQUMKEJ'
 if (!WIT_TOKEN) {
@@ -27,6 +27,10 @@ const weatherAPI = '8ba0a17ada98c62ad89a2f76f571960d'
 const location = 'Maynooth,ie'
 const weather_token = "EAADhwQPQXKcBAHlW2N5TCSNdGfZAV6zseswplofZB0uK3nBsGZB0ZBJF2X21OExJCkGkxBQRTVWlKE0upHTGGfJCAVNTPx9SDv1Wzsem8RZCWULb2KEY7SS58w30zTvPpZAXVc8ZBzvBGZB23yOsxkpCN4fNo7ydbcD4acG0lFS4AwZDZD"
 
+
+// Dirname
+const root = "/" + path.resolve(__dirname)
+
 module.exports = {
   WIT_TOKEN: WIT_TOKEN,
   FB_PAGE_TOKEN: FB_PAGE_TOKEN,
@@ -36,5 +40,6 @@ module.exports = {
   S_SCOPES : scopes,
   W_CLIENT_ID:weatherAPI,
   W_VERIFY_TOKEN:weather_token,
-  W_LOCATION : location
+  W_LOCATION : location,
+  root:root
 }

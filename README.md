@@ -1,7 +1,7 @@
 # Ehla
 Home automation project
 
-![Facebook](public/messenger_code_395838780757925.png "Logo Title Text 1")
+![Facebook](public/messenger_code_395838780757925.png "Messenger code")
 <pre>
   E - Entertainment
   H - Heating
