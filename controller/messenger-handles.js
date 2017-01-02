@@ -119,8 +119,8 @@ var handleMessage = (messaging_event) => {
           let url = 'https://scontent.xx.fbcdn.net/v/t34.0-12/15870941_10207508265653446_564443884_n.gif?_nc_ad=z-m&oh=cb1ff0bece4af4b01ff3c00ae17ef8a5&oe=586CB6DA'
           let atts = 'image'
           sendImg(sender,url)
-          .then(typingOff(sender))
-          .then(newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome))
+          typingOff(sender)
+          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           typingOff(sender)
