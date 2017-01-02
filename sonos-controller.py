@@ -3,16 +3,16 @@ import soco
 
 def getStatus(player):
     return player.get_current_transport_info()['current_transport_state']
-    
+
 def printInfo(player):
     info = player.get_current_track_info()
     print "Status : %s" % player.get_current_transport_info()['current_transport_state']
     print "Song : %s at %s" % (info['title'],info['position'])
     sys.stdout.flush()
-    
+
 def play(player):
     player.play()
-    
+
 def pause(player):
     player.pause()
 
@@ -30,30 +30,35 @@ def main(argv):
         print 'Expected options -n "next", -p "previous", --play,--pause'
         sys.stdout.flush()
         sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-n':
-            print 'Playing next...'
-            sys.stdout.flush()
-            FR.next()
-            FR.play()
-            printInfo(FR)
-        elif opt == '-p':
-            print 'Playing previous...'
-            sys.stdout.flush()
-            FR.previous()
-            FR.play()
-            printInfo(FR)
-        elif opt == '--play':
-            print 'Playing...'
-            sys.stdout.flush()
-            FR.play()
-            printInfo(FR)
-        elif opt == '--pause':
-            print 'Pausing...'
-            sys.stdout.flush()
-            FR.pause()
-            printInfo(FR)
-        elif opt == '--status':
-            printInfo(FR)     
+    try:
+        for opt, arg in opts:
+            if opt == '-n':
+                print 'Playing next...'
+                sys.stdout.flush()
+                FR.next()
+                FR.play()
+                printInfo(FR)
+            elif opt == '-p':
+                print 'Playing previous...'
+                sys.stdout.flush()
+                FR.previous()
+                FR.play()
+                printInfo(FR)
+            elif opt == '--play':
+                print 'Playing...'
+                sys.stdout.flush()
+                FR.play()
+                printInfo(FR)
+            elif opt == '--pause':
+                print 'Pausing...'
+                sys.stdout.flush()
+                FR.pause()
+                printInfo(FR)
+            elif opt == '--status':
+                printInfo(FR)
+            else:
+                print "Something feels fucky"
+    except Exception as e:
+        print "cannot access Sonos players"
 if __name__ == "__main__":
    main(main(sys.argv[1:]))

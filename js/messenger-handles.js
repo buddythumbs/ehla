@@ -158,7 +158,7 @@ var handleMedia = (sender,user,event) => {
   let mediaType = event.message.attachments.forEach((attachment)=>{
     switch (attachment.type) {
       case "audio":
-      console.log('Audio');
+        console.log('Audio');
         break;
       case "location":
         weather.getWeather(event.message.attachments[0].payload.coordinates)
@@ -167,7 +167,7 @@ var handleMedia = (sender,user,event) => {
           // newMessage(sender,msg)
           var msg = response.main.temp +
             " celsius with " +
-            response.weather[0].description + 
+            response.weather[0].description +
             " in " +
             response.name
           newMessage(sender,msg)
@@ -180,16 +180,15 @@ var handleMedia = (sender,user,event) => {
         })
         break;
       case "image":
-      console.log('Image');
-      if (attachment.payload.sticker_id) {
+        console.log('Image');
+        if (attachment.payload.sticker_id) {
         if (attachment.payload.sticker_id === 369239263222822) {
-          let msg = "beep boop 👍"
-          newMessage(sender,msg)
+            let msg = "beep boop 👍"
+            newMessage(sender,msg)
+          }
         }
-      }
         break;
       default:
-
     }
   })
 }
