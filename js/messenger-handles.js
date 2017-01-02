@@ -75,13 +75,18 @@ var newMessage = (recipientId, msg, atts, cb)=> {
 		}
     logIt({"MESSAGE ":opts.json.message})
 	}
-  request(opts,(error, response, body) => {
-    if (!error && response.statusCode == 200) {
-      logIt({"Reply":body});
-    } else {
-      logIt({"Error":error || response.body.error});
-    }
-  })
+  return new Promise(function(resolve, reject) {
+    request(opts,(error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        logIt({"Reply":body});
+        resolve()
+      } else {
+        logIt({"Error":error || response.body.error});
+        reject(error || response.body.error)
+      }
+    })
+  });
+
 }
 // PARSE A FACEBOOK MESSAGE to get user, message body, or attachment
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
@@ -114,8 +119,8 @@ var handleMessage = (messaging_event) => {
           let url = 'https://scontent.xx.fbcdn.net/v/t34.0-12/15870941_10207508265653446_564443884_n.gif?_nc_ad=z-m&oh=cb1ff0bece4af4b01ff3c00ae17ef8a5&oe=586CB6DA'
           let atts = 'image'
           newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
-          newMessage(sender,url,atts)
-          typingOff(sender)
+          .then(newMessage(sender,url,atts),(err)=>{})
+          .then(typingOff(sender),(err)=>{})
         }else if (text.toLowerCase() === "help") {
           newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
           typingOff(sender)
