@@ -6,7 +6,6 @@ module.exports = {
     if (!arg) {
       arg = "--play"
     }
-    let arg = arg;
     var spawn = require("child_process").spawn;
     var process = spawn('python',["sonos-controller.py", arg]);
     process.stdout.on('data', (data)=>{
