@@ -3,7 +3,7 @@ const Config = require('../config');
 const request = require('request');
 const weather = require('./weather');
 const sns = require('../routes/sonos');
-
+const witAPI = require('../services/witAPI')
 const welcome = {
   "quick_replies":[{
         "content_type":"text",
@@ -115,24 +115,25 @@ var handleMessage = (messaging_event) => {
       }else if (event.message && event.message.text) {
         typing(sender)
         let text = event.message.text
-        if (text.match(/hey|hello|hi|👋/i)){
-          let url = 'https://scontent.xx.fbcdn.net/v/t34.0-12/15870941_10207508265653446_564443884_n.gif?_nc_ad=z-m&oh=cb1ff0bece4af4b01ff3c00ae17ef8a5&oe=586CB6DA'
-          let atts = 'image'
-          // sendImg(sender,url)
-          typingOff(sender)
-          newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
-        }else if (text.toLowerCase() === "help") {
-          newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
-          typingOff(sender)
-        }else if (text.toLowerCase().match(/sonos/)) {
-          sns.handleRequest(text)
-        }else if (text.match(/thanks|nice|great/)) {
-          newMessage(sender,"beep boop 👍")
-          typingOff(sender)
-        } else {
-          newMessage(sender,"bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
-          typingOff(sender)
-        }
+        console.log(witAPI.witRequest(text))
+        // if (text.match(/hey|hello|hi|👋/i)){
+        //   let url = 'https://scontent.xx.fbcdn.net/v/t34.0-12/15870941_10207508265653446_564443884_n.gif?_nc_ad=z-m&oh=cb1ff0bece4af4b01ff3c00ae17ef8a5&oe=586CB6DA'
+        //   let atts = 'image'
+        //   // sendImg(sender,url)
+        //   typingOff(sender)
+        //   newMessage(sender,"Hey " + user.first_name + "! \nWhat can I do for you ? ... beep boop",welcome)
+        // }else if (text.toLowerCase() === "help") {
+        //   newMessage(sender,"Help:\n Type 'Pic' to get back a picture\nType 'Hello/Hi/Hey' to get a response\n")
+        //   typingOff(sender)
+        // }else if (text.toLowerCase().match(/sonos/)) {
+        //   sns.handleRequest(text)
+        // }else if (text.match(/thanks|nice|great/)) {
+        //   newMessage(sender,"beep boop 👍")
+        //   typingOff(sender)
+        // } else {
+        //   newMessage(sender,"bipipipip boop ... Sorry " + user.first_name + ", I don't know how to handle that request...yet 😳💩")
+        //   typingOff(sender)
+        // }
       }else{
         handleMedia(sender,user,event);
       }

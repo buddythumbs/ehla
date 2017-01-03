@@ -8,5 +8,8 @@ const SP = require('../controller/spotify-controller');
 router.get('/callback/',SP.callbackResp)
 // Callback from spotify
 router.get('/',SP.indexResp)
-
+// Login route
+router.get('/login/',SP.login)
+// Refresh
+router.get('/refresh_token',SP.refreshHand)
 module.exports = router

@@ -21,6 +21,7 @@
   "homepage": "https://github.com/martin0852/ehla#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "node-wit": "^3.3.2",
